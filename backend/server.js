@@ -19,6 +19,8 @@ const { ensureIndexes } = require('./api/_lib/db-indexes');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 // Security headers
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },

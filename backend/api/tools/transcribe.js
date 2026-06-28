@@ -1,11 +1,32 @@
 const express = require('express');
 const multer = require('multer');
+const { requireUser } = require('../_lib/require-user');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 200 * 1024 * 1024 } });
+
+const ALLOWED_MIMETYPES = [
+  'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/webm',
+  'audio/ogg', 'audio/flac', 'audio/mp4', 'audio/x-m4a',
+  'video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'
+];
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (ALLOWED_MIMETYPES.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only audio and video files are accepted.'));
+    }
+  }
+});
 const router = express.Router();
 
 router.post('/', upload.single('file'), async (req, res) => {
+  const user = await requireUser(req, res);
+  if (!user) return;
+
   if (!req.file) {
     res.status(400).json({ message: 'No file uploaded. Please upload an audio or video file.' });
     return;

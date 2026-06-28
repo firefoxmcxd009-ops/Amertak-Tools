@@ -2,7 +2,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { getDb } = require('../api/_lib/db');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'please-change-this-secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('FATAL: JWT_SECRET environment variable is required. Server cannot start without it.');
+}
 const JWT_EXPIRATION = '7d';
 const COOKIE_NAME = 'amertak_token';
 const memoryUsers = [];

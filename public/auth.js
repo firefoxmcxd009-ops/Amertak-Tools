@@ -5,7 +5,11 @@ const API_BASE = (window.location.hostname === 'localhost' || window.location.ho
 function showMessage(message, isError = false) {
   const status = document.getElementById('status');
   if (!status) return;
-  status.innerHTML = `<div class="message" style="${isError ? 'background:#ffe8e8;color:#8f1d1d;' : 'background:#eafaf0;color:#17653a;'}">${message}</div>`;
+  const div = document.createElement('div');
+  div.className = 'message';
+  div.style.cssText = isError ? 'background:#ffe8e8;color:#8f1d1d;' : 'background:#eafaf0;color:#17653a;';
+  div.textContent = message;
+  status.replaceChildren(div);
 }
 
 function setLoading(isLoading) {
@@ -49,7 +53,11 @@ async function handleLogin(event) {
     if (data.user) {
       localStorage.setItem('user', JSON.stringify(data.user));
       const next = new URLSearchParams(window.location.search).get('next') || '/';
-      window.location.href = next;
+      if (next.startsWith('/') && !next.startsWith('//')) {
+        window.location.href = next;
+      } else {
+        window.location.href = '/';
+      }
       return;
     }
 

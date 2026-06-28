@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const authRouter = require('./server/authRoutes');
@@ -35,6 +37,8 @@ const allowedOrigins = [
   ...configuredOrigins
 ];
 
+app.use(helmet());
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -46,12 +50,29 @@ app.use(cors({
   credentials: true
 }));
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { message: 'Too many attempts. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { message: 'Too many requests. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb' }));
 app.use(cookieParser());
 
 // API Routes
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authLimiter, authRouter);
+app.use('/api/tools', apiLimiter);
 app.use('/api/tools/image-to-url', imageToUrlRouter);
 app.use('/api/tools/downloader', downloaderRouter);
 app.use('/api/tools/transcribe', transcribeRouter);
@@ -73,7 +94,11 @@ app.use((req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
-  res.status(500).json({ message: 'Internal server error', error: err.message });
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.status(500).json({
+    message: 'Internal server error',
+    ...(isProduction ? {} : { error: err.message })
+  });
 });
 
 const port = process.env.PORT || 3001;

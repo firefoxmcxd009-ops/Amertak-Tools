@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "cleanUrls": true
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/share/:id", "destination": "/share.html" },
     { "source": "/about", "destination": "/about/index.html" },

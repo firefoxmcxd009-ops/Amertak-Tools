@@ -74,3 +74,7 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+module.exports._normalizeHex = normalizeHex;
+module.exports._hexToRgb = hexToRgb;
+module.exports._rgbToHsl = rgbToHsl;
+module.exports._rgbToHsv = rgbToHsv;

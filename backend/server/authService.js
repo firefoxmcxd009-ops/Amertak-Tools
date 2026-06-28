@@ -204,5 +204,6 @@ module.exports = {
   registerUser,
   loginUser,
   getUserFromRequest,
-  verifyTokenFromRequest
+  verifyTokenFromRequest,
+  _parseCookies: parseCookies
 };

@@ -111,3 +111,6 @@ async function imageToUrlHandler(req, res) {
 }
 
 module.exports = imageToUrlHandler;
+module.exports._generateShortId = generateShortId;
+module.exports._getBaseUrl = getBaseUrl;
+module.exports._getSubPath = getSubPath;

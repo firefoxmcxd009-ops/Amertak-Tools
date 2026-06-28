@@ -1,4 +1,4 @@
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === 'https://amertak-tools-f3zb.onrender.com')
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3001'
     : 'https://amertak-tools-f3zb.onrender.com';
 
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json().catch(() => ({}));
 
             if (!response.ok || data.error) {
-                throw new Error(data.message || `Request failed with status ${response.status}`);
+                throw new Error(data.error || data.message || `Request failed with status ${response.status}`);
             }
 
             displayVideoInfo(data);
@@ -73,7 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayVideoInfo(data) {
         videoTitle.textContent = data.title || 'Untitled Video';
-        videoAuthor.textContent = `By ${data.author || 'Unknown'}`;
+
+        const metaParts = [`By ${data.author || 'Unknown'}`];
+        if (data.durationFormatted) metaParts.push(data.durationFormatted);
+        if (data.viewCount) metaParts.push(`${Number(data.viewCount).toLocaleString()} views`);
+        if (data.uploadDate) {
+            const d = data.uploadDate;
+            if (d.length === 8) {
+                metaParts.push(`${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`);
+            }
+        }
+        videoAuthor.textContent = metaParts.join(' | ');
 
         if (data.thumbnail) {
             videoThumbnail.src = data.thumbnail;

@@ -106,7 +106,7 @@ async function imageToUrlHandler(req, res) {
     res.status(405).json({ message: 'Method not allowed' });
   } catch (error) {
     console.error('Image to URL API error:', error);
-    res.status(500).json({ message: error.message || 'Image to URL request failed' });
+    res.status(500).json({ message: 'Image to URL request failed.' });
   }
 }
 

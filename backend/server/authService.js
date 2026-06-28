@@ -12,7 +12,11 @@ async function getUserStore() {
     const db = await getDb();
     return { mode: 'mongodb', users: db.collection('users') };
   } catch (error) {
-    console.warn('MongoDB unavailable, using in-memory auth fallback:', error.message);
+    console.warn(
+      'MongoDB unavailable, using in-memory auth fallback.',
+      'Data will NOT persist across restarts.',
+      'Error:', error.message
+    );
     return { mode: 'memory', users: memoryUsers };
   }
 }
@@ -52,6 +56,9 @@ function verifyTokenFromRequest(req) {
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
+    if (error.name !== 'TokenExpiredError') {
+      console.warn('JWT verification failed:', error.name, error.message);
+    }
     return null;
   }
 }

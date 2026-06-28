@@ -34,13 +34,14 @@ router.post('/', async (req, res) => {
       'charset-target': 'UTF-8'
     });
     const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?${params.toString()}`);
-    const arrayBuffer = await response.arrayBuffer();
 
     if (!response.ok) {
+      console.error('QR service returned status:', response.status);
       res.status(502).json({ message: 'QR service failed.' });
       return;
     }
 
+    const arrayBuffer = await response.arrayBuffer();
     const base64 = Buffer.from(arrayBuffer).toString('base64');
     res.status(200).json({
       success: true,

@@ -60,17 +60,22 @@ function rgbToHsv({ r, g, b }) {
 }
 
 router.post('/', async (req, res) => {
-  const user = await requireUser(req, res);
-  if (!user) return;
+  try {
+    const user = await requireUser(req, res);
+    if (!user) return;
 
-  const hex = normalizeHex(req.body?.hex);
-  if (!hex) {
-    res.status(400).json({ message: 'Invalid HEX color.' });
-    return;
+    const hex = normalizeHex(req.body?.hex);
+    if (!hex) {
+      res.status(400).json({ message: 'Invalid HEX color.' });
+      return;
+    }
+
+    const rgb = hexToRgb(hex);
+    res.status(200).json({ success: true, hex, rgb, hsl: rgbToHsl(rgb), hsv: rgbToHsv(rgb) });
+  } catch (error) {
+    console.error('Color converter error:', error);
+    res.status(500).json({ message: 'Color conversion failed due to a server error.' });
   }
-
-  const rgb = hexToRgb(hex);
-  res.status(200).json({ success: true, hex, rgb, hsl: rgbToHsl(rgb), hsv: rgbToHsv(rgb) });
 });
 
 module.exports = router;

@@ -16,11 +16,16 @@ function countText(text) {
 }
 
 router.post('/', async (req, res) => {
-  const user = await requireUser(req, res);
-  if (!user) return;
+  try {
+    const user = await requireUser(req, res);
+    if (!user) return;
 
-  const text = String(req.body?.text || '');
-  res.status(200).json({ success: true, counts: countText(text) });
+    const text = String(req.body?.text || '');
+    res.status(200).json({ success: true, counts: countText(text) });
+  } catch (error) {
+    console.error('Text counter error:', error);
+    res.status(500).json({ message: 'Text counting failed due to a server error.' });
+  }
 });
 
 module.exports = router;

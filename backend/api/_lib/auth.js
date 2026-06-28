@@ -114,6 +114,9 @@ function verifyTokenFromRequest(req) {
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
+    if (error.name !== 'TokenExpiredError') {
+      console.warn('JWT verification failed:', error.name, error.message);
+    }
     return null;
   }
 }

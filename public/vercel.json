@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "buildCommand": "exit 0",
+  "cleanUrls": true
   "rewrites": [
     { "source": "/share/:id", "destination": "/share.html" },
     { "source": "/about", "destination": "/about/index.html" },

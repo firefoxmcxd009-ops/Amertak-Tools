@@ -1,9 +1,4 @@
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3001'
-    : 'https://amertak-tools-f3zb.onrender.com';
 
-// Use public Google Translate web endpoint (no API key required)
-// NOTE: This uses the unofficial `translate.googleapis.com` endpoint.
 
 const inputText = document.getElementById('inputText');
 const outputText = document.getElementById('outputText');
@@ -23,10 +18,8 @@ let translateTimeout;
 let lastDetectedLang = null;
 let currentText = '';
 
-function setStatus(message, isError = false) {
-    if (!statusText) return;
-    statusText.textContent = message;
-    statusText.style.color = isError ? '#ff5c7a' : '';
+function setTranslatorStatus(message, isError = false) {
+    setStatus(statusText, message, isError);
 }
 
 function setDetectedLang(langCode) {
@@ -104,15 +97,15 @@ async function translateText(text, source, target) {
 
         if (!response.ok) {
             const error = await response.json().catch(() => ({}));
-            setStatus(error.message || `Translation failed: ${response.status}`, true);
+            setTranslatorStatus(error.message || `Translation failed: ${response.status}`, true);
             return;
         }
 
         const json = await response.json();
         setOutput(json.translatedText || '');
-        setStatus('Translation complete.');
+        setTranslatorStatus('Translation complete.');
     } catch (error) {
-        setStatus('Unable to connect to translation API.', true);
+        setTranslatorStatus('Unable to connect to translation API.', true);
         console.error('Translation error:', error);
     }
 }
@@ -125,7 +118,7 @@ if (fileInput) {
         // allow files with no type or text/plain
         const isText = !f.type || f.type === 'text/plain';
         if (!isText && !f.name.endsWith('.txt')) {
-            setStatus('Please upload a .txt file.', true);
+            setTranslatorStatus('Please upload a .txt file.', true);
             return;
         }
 
@@ -140,7 +133,7 @@ if (fileInput) {
             handleTextInput();
         };
         reader.onerror = function() {
-            setStatus('Failed to read file.', true);
+            setTranslatorStatus('Failed to read file.', true);
         };
         reader.readAsText(f, 'UTF-8');
     });
@@ -152,14 +145,14 @@ if (pasteBtn) {
         try {
             const text = await navigator.clipboard.readText();
             if (!text) {
-                setStatus('Clipboard empty or not accessible.', true);
+                setTranslatorStatus('Clipboard empty or not accessible.', true);
                 return;
             }
             setCurrentText(text);
             handleTextInput();
-            setStatus('Pasted from clipboard.');
+            setTranslatorStatus('Pasted from clipboard.');
         } catch (err) {
-            setStatus('Unable to read clipboard.', true);
+            setTranslatorStatus('Unable to read clipboard.', true);
         }
     });
 }
@@ -202,7 +195,7 @@ function clearForm() {
     if (fileInput) {
         fileInput.value = '';
     }
-    setStatus('Ready. Upload a .txt file to translate.');
+    setTranslatorStatus('Ready. Upload a .txt file to translate.');
     copyBtn.disabled = true;
     clearTimeout(translateTimeout);
 }
@@ -210,9 +203,9 @@ function clearForm() {
 function copyOutput() {
     if (!outputText.value.trim()) return;
     navigator.clipboard.writeText(outputText.value.trim()).then(() => {
-        setStatus('Translated text copied to clipboard.');
+        setTranslatorStatus('Translated text copied to clipboard.');
     }).catch(() => {
-        setStatus('Unable to copy text. Please try manually.', true);
+        setTranslatorStatus('Unable to copy text. Please try manually.', true);
     });
 }
 
@@ -265,22 +258,5 @@ if (tgtLang) {
 }
 
 // Initialize
-setStatus('Ready. Upload a .txt file to translate.');
-
-// កូដស្វ័យប្រវត្តិកត់ត្រាការចូលមើលទំព័រ
-window.addEventListener('DOMContentLoaded', () => {
-    // ចាប់យកឈ្មោះផ្លូវទំព័រនាពេលបច្ចុប្បន្ន (ឧទាហរណ៍៖ /tools/downloader/index.html)
-    const currentPage = window.location.pathname; 
-
-    fetch('https://tools-amertak.vercel.app/api/track-page', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pageName: currentPage })
-    })
-    .then(res => res.json())
-    .then(data => console.log('Page view tracked:', data))
-    .catch(err => console.error('Analytics Error:', err));
-});
+setTranslatorStatus('Ready. Upload a .txt file to translate.');
 

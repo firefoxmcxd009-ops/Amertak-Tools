@@ -1,7 +1,3 @@
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3001'
-    : 'https://amertak-tools-f3zb.onrender.com';
-
 const mediaInput = document.getElementById('mediaInput');
 const fileName = document.getElementById('fileName');
 const videoPlayer = document.getElementById('videoPlayer');
@@ -24,9 +20,8 @@ let activeObjectUrl = '';
 let captions = [];
 let abortController = null;
 
-function setStatus(message, isError = false) {
-    statusText.textContent = message;
-    statusText.style.color = isError ? '#ff5c7a' : '';
+function setTranscribeStatus(message, isError = false) {
+    setStatus(statusText, message, isError);
 }
 
 function formatSrtTime(seconds) {
@@ -96,12 +91,12 @@ function loadMediaFile(file) {
     transcriptText.value = '';
     renderCaptions();
     updateControlState();
-    setStatus('Media loaded. Ready to transcribe.');
+    setTranscribeStatus('Media loaded. Ready to transcribe.');
 }
 
 async function startTranscribe() {
     if (!selectedFile) {
-        setStatus('Please select an audio or video file first.', true);
+        setTranscribeStatus('Please select an audio or video file first.', true);
         return;
     }
 
@@ -113,7 +108,7 @@ async function startTranscribe() {
     startBtn.disabled = true;
     stopBtn.disabled = false;
     clearBtn.disabled = true;
-    setStatus('Uploading and transcribing...');
+    setTranscribeStatus('Uploading and transcribing...');
 
     const formData = new FormData();
     formData.append('file', selectedFile, selectedFile.name);
@@ -133,14 +128,14 @@ async function startTranscribe() {
 
         transcriptText.value = String(data.text || '').trim();
         syncCaptionsFromText();
-        setStatus('Transcription completed successfully.');
+        setTranscribeStatus('Transcription completed successfully.');
         activePlayer?.play().catch(() => {});
     } catch (error) {
         if (error.name === 'AbortError') {
-            setStatus('Transcription cancelled.', true);
+            setTranscribeStatus('Transcription cancelled.', true);
         } else {
             console.error('Transcription error:', error);
-            setStatus(error.message || 'Transcription failed.', true);
+            setTranscribeStatus(error.message || 'Transcription failed.', true);
         }
     } finally {
         abortController = null;
@@ -159,7 +154,7 @@ function stopTranscribe() {
     activePlayer?.pause();
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    setStatus('Transcription stopped.');
+    setTranscribeStatus('Transcription stopped.');
 }
 
 function syncCaptionsFromText() {
@@ -228,11 +223,11 @@ clearBtn.addEventListener('click', () => {
     audioPlayer.hidden = true;
     fileName.textContent = 'MP3, WAV, MP4, WEBM, MOV';
     updateControlState();
-    setStatus('Cleared.');
+    setTranscribeStatus('Cleared.');
 });
 copyBtn.addEventListener('click', async () => {
     await navigator.clipboard.writeText(transcriptText.value);
-    setStatus('Copied to clipboard.');
+    setTranscribeStatus('Copied to clipboard.');
 });
 downloadBtn.addEventListener('click', downloadCaptions);
 transcriptText.addEventListener('input', () => {
@@ -241,4 +236,4 @@ transcriptText.addEventListener('input', () => {
 });
 
 updateControlState();
-setStatus('Ready.');
+setTranscribeStatus('Ready.');

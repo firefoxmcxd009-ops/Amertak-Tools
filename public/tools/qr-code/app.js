@@ -15,35 +15,12 @@ const scanPreview = document.getElementById('scanPreview');
 const copyScanBtn = document.getElementById('copyScanBtn');
 const openResultBtn = document.getElementById('openResultBtn');
 
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3001'
-    : 'https://amertak-tools-f3zb.onrender.com';
-
 const defaultText = '';
 const apiBaseUrl = 'https://api.qrserver.com/v1';
 let generatedBlob = null;
 let generatedObjectUrl = '';
 
-function setStatus(node, message, type = '') {
-    node.textContent = message;
-    node.classList.toggle('is-error', type === 'error');
-    node.classList.toggle('is-success', type === 'success');
-}
 
-function clampNumber(value, min, max, fallback) {
-    const parsed = Number(value);
-    if (Number.isNaN(parsed)) return fallback;
-    return Math.min(Math.max(parsed, min), max);
-}
-
-function isLikelyUrl(value) {
-    try {
-        const url = new URL(value);
-        return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch {
-        return false;
-    }
-}
 
 function revokeGeneratedUrl() {
     if (generatedObjectUrl) {
@@ -56,6 +33,7 @@ async function generateQrCode() {
     const text = qrText.value.trim();
     if (!text) {
         setStatus(qrStatus, 'Enter text or URL first', 'error');
+
         qrText.focus();
         return;
     }
@@ -187,7 +165,7 @@ async function scanFile(file) {
 
         scanResult.value = symbol.data;
         copyScanBtn.disabled = false;
-        openResultBtn.disabled = !isLikelyUrl(symbol.data);
+        openResultBtn.disabled = !isValidUrl(symbol.data);
         setStatus(scanStatus, 'DecodedI', 'success');
     } catch (error) {
         scanResult.value = '';
@@ -206,7 +184,7 @@ async function copyScanResult() {
 
 function openScanResult() {
     const value = scanResult.value.trim();
-    if (isLikelyUrl(value)) {
+    if (isValidUrl(value)) {
         window.open(value, '_blank', 'noopener,noreferrer');
     }
 }
@@ -230,22 +208,8 @@ function initQrTool() {
         scanFile(event.target.files[0]);
     });
 
-    ['dragenter', 'dragover'].forEach((eventName) => {
-        dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            dropZone.classList.add('is-dragging');
-        });
-    });
-
-    ['dragleave', 'drop'].forEach((eventName) => {
-        dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            dropZone.classList.remove('is-dragging');
-        });
-    });
-
-    dropZone.addEventListener('drop', (event) => {
-        scanFile(event.dataTransfer.files[0]);
+    setupDropZone(dropZone, {
+        onDrop: (files) => scanFile(files[0])
     });
 
     generateQrCode();
@@ -253,20 +217,5 @@ function initQrTool() {
 
 document.addEventListener('DOMContentLoaded', initQrTool);
 
-// កូដស្វ័យប្រវត្តិកត់ត្រាការចូលមើលទំព័រ
-window.addEventListener('DOMContentLoaded', () => {
-    // ចាប់យកឈ្មោះផ្លូវទំព័រនាពេលបច្ចុប្បន្ន (ឧទាហរណ៍៖ /tools/downloader/index.html)
-    const currentPage = window.location.pathname; 
 
-    fetch('https://tools-amertak.vercel.app/api/track-page', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pageName: currentPage })
-    })
-    .then(res => res.json())
-    .then(data => console.log('Page view tracked:', data))
-    .catch(err => console.error('Analytics Error:', err));
-});
 

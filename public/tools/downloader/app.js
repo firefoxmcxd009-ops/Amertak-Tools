@@ -1,7 +1,3 @@
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === 'https://amertak-tools-f3zb.onrender.com')
-    ? 'http://localhost:3001'
-    : 'https://amertak-tools-f3zb.onrender.com';
-
 document.addEventListener('DOMContentLoaded', () => {
     const urlInput = document.querySelector('.url-input');
     const fetchBtn = document.getElementById('fetchBtn');
@@ -143,14 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
     }
 
-    function isValidUrl(value) {
-        try {
-            const url = new URL(value);
-            return url.protocol === 'http:' || url.protocol === 'https:';
-        } catch {
-            return false;
-        }
-    }
+
 
     function formatQuality(quality) {
         return formatLabel(quality || 'Media');
@@ -162,14 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/\b\w/g, (char) => char.toUpperCase());
     }
 
-    function formatFileSize(bytes) {
-        const value = Number(bytes);
-        if (!Number.isFinite(value) || value <= 0) return 'Size unknown';
 
-        const units = ['Bytes', 'KB', 'MB', 'GB'];
-        const index = Math.min(Math.floor(Math.log(value) / Math.log(1024)), units.length - 1);
-        return `${(value / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
-    }
 
     function showLoader() {
         loader.style.display = 'block';

@@ -12,31 +12,11 @@ const statusText = document.getElementById('statusText');
 
 let images = [];
 
-function setStatus(message, type = '') {
-    statusText.textContent = message;
-    statusText.classList.toggle('is-error', type === 'error');
-    statusText.classList.toggle('is-success', type === 'success');
+function setPdfStatus(message, type = '') {
+    setStatus(statusText, message, type);
 }
 
-function formatFileSize(bytes) {
-    const units = ['B', 'KB', 'MB'];
-    let value = bytes;
-    let unit = 0;
-
-    while (value >= 1024 && unit < units.length - 1) {
-        value /= 1024;
-        unit += 1;
-    }
-
-    return `${value.toFixed(value >= 10 ? 0 : 1)} ${units[unit]}`;
-}
-
-function getId() {
-    if (window.crypto?.randomUUID) return crypto.randomUUID();
-    return `image-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-function readImage(file) {
+function readPdfImage(file) {
     return new Promise((resolve, reject) => {
         if (!file.type.startsWith('image/')) {
             reject(new Error(`${file.name} is not an image`));
@@ -45,7 +25,7 @@ function readImage(file) {
 
         const reader = new FileReader();
         reader.onload = () => resolve({
-            id: getId(),
+            id: generateId(),
             name: file.name,
             size: file.size,
             type: file.type,
@@ -81,13 +61,13 @@ async function addFiles(fileList) {
     if (!files.length) return;
 
     try {
-        setStatus('Loading images...');
-        const loaded = await Promise.all(files.map(readImage));
+        setPdfStatus('Loading images...');
+        const loaded = await Promise.all(files.map(readPdfImage));
         images = images.concat(loaded);
         renderImages();
-        setStatus('Images ready', 'success');
+        setPdfStatus('Images ready', 'success');
     } catch (error) {
-        setStatus(error.message, 'error');
+        setPdfStatus(error.message, 'error');
     }
 }
 
@@ -137,7 +117,7 @@ function moveImage(id, direction) {
 function removeImage(id) {
     images = images.filter((image) => image.id !== id);
     renderImages();
-    setStatus(images.length ? 'Image removed' : 'Waiting for images');
+    setPdfStatus(images.length ? 'Image removed' : 'Waiting for images');
 }
 
 function getImagePlacement(image, pdfWidth, pdfHeight, margin, mode) {
@@ -170,13 +150,13 @@ async function createPdf() {
     if (!images.length) return;
 
     if (!window.jspdf?.jsPDF) {
-        setStatus('PDF library failed to load', 'error');
+        setPdfStatus('PDF library failed to load', 'error');
         return;
     }
 
     try {
         createPdfBtn.disabled = true;
-        setStatus('Creating PDF...');
+        setPdfStatus('Creating PDF...');
 
         const pdf = new window.jspdf.jsPDF({
             orientation: orientation.value,
@@ -199,9 +179,9 @@ async function createPdf() {
         }
 
         pdf.save('amertak_' + pdfid + '.pdf');
-        setStatus('PDF downloaded', 'success');
+        setPdfStatus('PDF downloaded', 'success');
     } catch (error) {
-        setStatus('Could not create PDF', 'error');
+        setPdfStatus('Could not create PDF', 'error');
         console.error(error);
     } finally {
         createPdfBtn.disabled = images.length === 0;
@@ -212,7 +192,7 @@ function clearImages() {
     images = [];
     imageInput.value = '';
     renderImages();
-    setStatus('Waiting for images');
+    setPdfStatus('Waiting for images');
 }
 
 function initImageToPdf() {
@@ -232,40 +212,11 @@ function initImageToPdf() {
         if (action === 'remove') removeImage(id);
     });
 
-    ['dragenter', 'dragover'].forEach((eventName) => {
-        dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            dropZone.classList.add('is-dragging');
-        });
-    });
-
-    ['dragleave', 'drop'].forEach((eventName) => {
-        dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            dropZone.classList.remove('is-dragging');
-        });
-    });
-
-    dropZone.addEventListener('drop', (event) => {
-        addFiles(event.dataTransfer.files);
+    setupDropZone(dropZone, {
+        onDrop: (files) => addFiles(files)
     });
 }
 
 document.addEventListener('DOMContentLoaded', initImageToPdf);
 
-// កូដស្វ័យប្រវត្តិកត់ត្រាការចូលមើលទំព័រ
-window.addEventListener('DOMContentLoaded', () => {
-    // ចាប់យកឈ្មោះផ្លូវទំព័រនាពេលបច្ចុប្បន្ន (ឧទាហរណ៍៖ /tools/downloader/index.html)
-    const currentPage = window.location.pathname; 
 
-    fetch('https://tools-amertak.vercel.app/api/track-page', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pageName: currentPage })
-    })
-    .then(res => res.json())
-    .then(data => console.log('Page view tracked:', data))
-    .catch(err => console.error('Analytics Error:', err));
-});

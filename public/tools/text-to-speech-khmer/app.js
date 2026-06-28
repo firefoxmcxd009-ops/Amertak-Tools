@@ -5,9 +5,8 @@ const audioPlayer = document.getElementById('audioPlayer');
 const downloadBtn = document.getElementById('downloadBtn');
 const statusText = document.getElementById('statusText');
 
-function setStatus(message, isError = false) {
-    statusText.textContent = message;
-    statusText.style.color = isError ? '#ff8080' : '';
+function setSpeechStatus(message, isError = false) {
+    setStatus(statusText, message, isError);
 }
 
 function getKhmerVoice() {
@@ -22,12 +21,12 @@ function generateSpeech() {
     const text = inputText.value.trim();
 
     if (!text) {
-        setStatus('សូមវាយអត្ថបទជាមុនសិន', true);
+        setSpeechStatus('សូមវាយអត្ថបទជាមុនសិន', true);
         return;
     }
 
     if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-        setStatus('Browser text-to-speech is not supported here.', true);
+        setSpeechStatus('Browser text-to-speech is not supported here.', true);
         return;
     }
 
@@ -41,9 +40,9 @@ function generateSpeech() {
     const voice = getKhmerVoice();
     if (voice) utterance.voice = voice;
 
-    utterance.onstart = () => setStatus('កំពុងអាន...');
-    utterance.onend = () => setStatus('រួចរាល់');
-    utterance.onerror = () => setStatus('Unable to play speech in this browser.', true);
+    utterance.onstart = () => setSpeechStatus('កំពុងអាន...');
+    utterance.onend = () => setSpeechStatus('រួចរាល់');
+    utterance.onerror = () => setSpeechStatus('Unable to play speech in this browser.', true);
 
     audioPlayer.hidden = true;
     downloadBtn.hidden = true;
@@ -56,14 +55,14 @@ function clearForm() {
     audioPlayer.hidden = true;
     downloadBtn.hidden = true;
     window.speechSynthesis?.cancel();
-    setStatus('Ready.');
+    setSpeechStatus('Ready.');
 }
 
 speakBtn.addEventListener('click', generateSpeech);
 clearBtn.addEventListener('click', clearForm);
 downloadBtn.addEventListener('click', () => {
-    setStatus('Download is unavailable for browser speech playback.', true);
+    setSpeechStatus('Download is unavailable for browser speech playback.', true);
 });
 
 window.speechSynthesis?.addEventListener?.('voiceschanged', getKhmerVoice);
-setStatus('Ready.');
+setSpeechStatus('Ready.');

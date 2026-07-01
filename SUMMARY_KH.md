@@ -36,7 +36,7 @@ Amertak Tools/
 
 ### 2️⃣ **រចនាសម្ព័ន្ធ Backend (Render)** 🔧
 
-✅ **URL:** `https://amertaktoolsapi.onrender.com`
+✅ **URL:** `https://amertak-tools-f3zb.onrender.com`
 
 - **Express.js** server ដែលបានកំណត់រចនាសម្ព័ន្ធ
 - **CORS** ដែលសមស្របសម្រាប់ Vercel domains
@@ -108,7 +108,7 @@ Amertak Tools/
 # 6. Deploy!
 ```
 
-**API URL:** `https://amertaktoolsapi.onrender.com`
+**API URL:** `https://amertak-tools-f3zb.onrender.com`
 
 ### **ជំហាន 3: Deploy Frontend ទៅ Vercel**
 
@@ -130,7 +130,7 @@ Amertak Tools/
 const API_URL = '/api/tools/downloader';
 
 // To:
-const API_URL = 'https://amertaktoolsapi.onrender.com/api/tools/downloader';
+const API_URL = 'https://amertak-tools-f3zb.onrender.com/api/tools/downloader';
 ```
 
 ---
@@ -227,6 +227,6 @@ const API_URL = 'https://amertaktoolsapi.onrender.com/api/tools/downloader';
 
 **ពេលវេលាហើយ:** 2024-12-23  
 **កម្រិត:** 1.0.0 - Ready for Production  
-**ទីតាំង:** https://amertaktoolsapi.onrender.com (API)
+**ទីតាំង:** https://amertak-tools-f3zb.onrender.com (API)
 
 ស្វាគមន៍ក្នុងការលើក deployment របស់អ្នក! 🚀✨

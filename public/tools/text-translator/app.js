@@ -1,6 +1,6 @@
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3001'
-    : 'https://amertaktoolsapi.onrender.com';
+    : 'https://amertak-tools-f3zb.onrender.com';
 
 // Use public Google Translate web endpoint (no API key required)
 // NOTE: This uses the unofficial `translate.googleapis.com` endpoint.

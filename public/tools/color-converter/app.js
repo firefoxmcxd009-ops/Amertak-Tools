@@ -1,6 +1,6 @@
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3001'
-    : 'https://amertaktoolsapi.onrender.com';
+    : 'https://amertak-tools-f3zb.onrender.com';
 
 const hexInput = document.getElementById('hexInput');
 const colorInput = document.getElementById('colorInput');

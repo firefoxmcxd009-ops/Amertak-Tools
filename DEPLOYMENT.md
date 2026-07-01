@@ -102,9 +102,9 @@ In Render dashboard, go to **Environment** tab and add:
 
 Click **"Deploy"** and wait for the build to complete.
 
-**Your API URL will be:** `https://amertaktoolsapi.onrender.com`
+**Your API URL will be:** `https://amertak-tools-f3zb.onrender.com`
 
-✅ Test it: Visit `https://amertaktoolsapi.onrender.com/health` - should return `{"status":"ok"}`
+✅ Test it: Visit `https://amertak-tools-f3zb.onrender.com/health` - should return `{"status":"ok"}`
 
 ---
 
@@ -150,7 +150,7 @@ const API_URL = '/api/tools/downloader';
 
 Change to:
 ```javascript
-const API_URL = 'https://amertaktoolsapi.onrender.com/api/tools/downloader';
+const API_URL = 'https://amertak-tools-f3zb.onrender.com/api/tools/downloader';
 ```
 
 ### 4.2 Update `public/tools/video-audio-transcribe/app.js`
@@ -162,14 +162,14 @@ const TRANSCRIBE_API_URL = '/api/tools/transcribe';
 
 Change to:
 ```javascript
-const TRANSCRIBE_API_URL = 'https://amertaktoolsapi.onrender.com/api/tools/transcribe';
+const TRANSCRIBE_API_URL = 'https://amertak-tools-f3zb.onrender.com/api/tools/transcribe';
 ```
 
 ### 4.3 Update `public/assets/js/app.js`
 
 Find all `/api/` URLs and replace with:
 ```
-https://amertaktoolsapi.onrender.com/api/
+https://amertak-tools-f3zb.onrender.com/api/
 ```
 
 ### 4.4 Push Changes
@@ -190,7 +190,7 @@ Both Render and Vercel will auto-redeploy. Give it 2-3 minutes.
 
 Visit these URLs and check responses:
 
-- **Health Check**: `https://amertaktoolsapi.onrender.com/health`
+- **Health Check**: `https://amertak-tools-f3zb.onrender.com/health`
 - **Register**: Make POST request to `/api/auth/register`
 - **Login**: Make POST request to `/api/auth/login`
 

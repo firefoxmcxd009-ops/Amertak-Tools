@@ -96,7 +96,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         downloadOptions.innerHTML = '';
 
-        if (Array.isArray(data.medias) && data.medias.length > 0) {
+        // Unified format support
+        if (data.downloads) {
+            if (data.downloads.video) {
+                downloadOptions.appendChild(createMediaOption({
+                    url: data.downloads.video,
+                    quality: 'Best Video',
+                    type: 'video',
+                    extension: 'mp4',
+                    size: null
+                }));
+            }
+            if (data.downloads.audio) {
+                downloadOptions.appendChild(createMediaOption({
+                    url: data.downloads.audio,
+                    quality: 'Best Audio',
+                    type: 'audio',
+                    extension: 'mp3',
+                    size: null
+                }));
+            }
+            if (Array.isArray(data.downloads.images) && data.downloads.images.length > 0) {
+                data.downloads.images.forEach((imgUrl, index) => {
+                    downloadOptions.appendChild(createMediaOption({
+                        url: imgUrl,
+                        quality: `Image ${index + 1}`,
+                        type: 'image',
+                        extension: 'jpg',
+                        size: null
+                    }));
+                });
+            }
+        } else if (Array.isArray(data.medias) && data.medias.length > 0) {
             data.medias.forEach((media) => {
                 downloadOptions.appendChild(createMediaOption(media));
             });

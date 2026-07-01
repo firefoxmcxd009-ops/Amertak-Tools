@@ -190,7 +190,7 @@ function renderSidebar() {
         profileWrapper.appendChild(userActions);
         nav.appendChild(profileWrapper);
     } else {
-        nav.appendChild(createNavLink({ label: 'Login', href: '/login', icon: navIcons.login }));
+        nav.appendChild(createNavLink({ label: 'Login', href: '/login.html', icon: navIcons.login }));
     }
 
     sidebar.replaceChildren(nav);
@@ -362,10 +362,10 @@ function createAuthPopup() {
     popup.querySelector('.auth-popup-close')?.addEventListener('click', hideAuthPopup);
     popup.querySelector('.auth-popup-close-btn')?.addEventListener('click', hideAuthPopup);
     popup.querySelector('.auth-popup-register')?.addEventListener('click', () => {
-        window.location.href = '/register';
+        window.location.href = '/register.html';
     });
     popup.querySelector('.auth-popup-login')?.addEventListener('click', () => {
-        window.location.href = '/login';
+        window.location.href = '/login.html';
     });
     popup.addEventListener('click', (event) => {
         if (event.target === popup) {

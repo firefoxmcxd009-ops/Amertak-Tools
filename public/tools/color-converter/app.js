@@ -86,6 +86,9 @@ async function updateColor(value) {
         return;
     }
 
+    const resultsCard = document.querySelector('.results-card');
+    if (resultsCard) resultsCard.style.opacity = '0.7';
+
     try {
         const response = await fetch(`${API_BASE}/api/tools/color-converter`, {
             method: 'POST',
@@ -109,6 +112,8 @@ async function updateColor(value) {
     } catch (error) {
         statusText.textContent = error.message || 'Color conversion failed.';
         statusText.style.color = '#ff5c7a';
+    } finally {
+        if (resultsCard) resultsCard.style.opacity = '1';
     }
 }
 

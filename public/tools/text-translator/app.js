@@ -77,6 +77,9 @@ function setCurrentText(t) {
 }
 
 async function translateText(text, source, target) {
+    const typingBox = document.getElementById('typingBox');
+    if (typingBox) typingBox.style.opacity = '0.7';
+
     if (!text.trim()) {
         setOutput('');
         if (detectedLangText) {
@@ -114,6 +117,8 @@ async function translateText(text, source, target) {
     } catch (error) {
         setStatus('Unable to connect to translation API.', true);
         console.error('Translation error:', error);
+    } finally {
+        if (typingBox) typingBox.style.opacity = '1';
     }
 }
 

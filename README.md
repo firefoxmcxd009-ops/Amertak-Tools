@@ -39,7 +39,7 @@ Amertak Tools/
 ## 🚀 Deployment
 
 ### Backend (Render)
-**URL:** https://amertaktoolsapi.onrender.com
+**URL:** https://amertak-tools-f3zb.onrender.com
 
 ```bash
 cd backend

@@ -65,6 +65,10 @@ async function generateQrCode() {
     qrSize.value = width;
     qrMargin.value = margin;
 
+    const originalBtnText = generateBtn.textContent;
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Generating...';
+
     try {
         setStatus(qrStatus, 'Fetching QR image...');
         const response = await fetch(`${API_BASE}/api/tools/qr-code`, {
@@ -91,8 +95,11 @@ async function generateQrCode() {
         generatedBlob = null;
         downloadBtn.disabled = true;
         copyBtn.disabled = true;
-        setStatus(qrStatus, 'Could not generrate QR image', 'error');
+        setStatus(qrStatus, 'Could not generate QR image', 'error');
         console.error(error);
+    } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = originalBtnText;
     }
 }
 

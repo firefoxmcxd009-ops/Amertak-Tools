@@ -76,7 +76,7 @@ git push origin main
 5. Add environment variables (same as .env)
 6. Deploy
 
-**Get your API URL:** e.g., `https://amertaktoolsapi.onrender.com`
+**Get your API URL:** e.g., `https://amertak-tools-f3zb.onrender.com`
 
 ### Step 5: Deploy Frontend (Vercel)
 
@@ -145,7 +145,7 @@ PORT=3001
 ### Frontend (public/.env)
 
 ```env
-VITE_API_BASE_URL=https://amertaktoolsapi.onrender.com
+VITE_API_BASE_URL=https://amertak-tools-f3zb.onrender.com
 ```
 
 ---

@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const authRouter = require('./server/authRoutes');
 const imageToUrlRouter = require('./api/tools/image-to-url');
-const downloaderRouter = require('./api/tools/downloader');
+const { router: downloaderRouter } = require('./api/tools/downloader');
 const transcribeRouter = require('./api/tools/transcribe');
 const qrCodeRouter = require('./api/tools/qr-code');
 const textTranslatorRouter = require('./api/tools/text-translator');
@@ -140,6 +140,14 @@ app.use((err, req, res, _next) => {
     success: false,
     error: process.env.NODE_ENV === 'production' ? 'Internal server error' : (err.message || 'Internal server error')
   });
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
 });
 
 const port = process.env.PORT || 3001;

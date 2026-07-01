@@ -2,7 +2,7 @@ document.documentElement.style.visibility = 'hidden';
 
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:3001'
-  : 'https://amertak-tools-f3zb.onrender.com';
+  : 'https://amertaktoolsapi.onrender.com';
 
 window.amertakToolAuth = (async function protectToolPage() {
   try {
@@ -20,6 +20,6 @@ window.amertakToolAuth = (async function protectToolPage() {
   }
 
   const next = `${window.location.pathname}${window.location.search}`;
-  window.location.replace(`/login?next=${encodeURIComponent(next)}`);
+  window.location.replace(`/login.html?next=${encodeURIComponent(next)}`);
   return false;
 }());

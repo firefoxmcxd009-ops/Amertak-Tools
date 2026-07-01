@@ -213,7 +213,7 @@
                 <button onclick="toggleSidebar()" class="hamburger-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="rgba(255,255,255,1)"><path d="M16 18V20H5V18H16ZM21 11V13H3V11H21ZM19 4V6H8V4H19Z"></path></svg>
                 </button>
-                <button id="loginBtn" class="login-btn" onclick="window.location.href='/login'">Login</button>
+                <button id="loginBtn" class="login-btn" onclick="window.location.href='/login.html'">Login</button>
                 <button class="toggleMode" id="toggleMode" onclick="toggleMode()">
                     <img id="mode-btn" src="/svg/light-mode.svg">
                 </button>
@@ -256,7 +256,7 @@
     <script>
         const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:3001'
-            : 'https://amertak-tools-f3zb.onrender.com';
+            : 'https://amertaktoolsapi.onrender.com';
 
         const fileId = window.location.pathname.split('/').pop();
 

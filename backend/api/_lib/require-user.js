@@ -1,4 +1,4 @@
-const { getUserFromRequest } = require('./auth');
+const { getUserFromRequest } = require('../../server/authService');
 
 async function requireUser(req, res) {
   const user = await getUserFromRequest(req);

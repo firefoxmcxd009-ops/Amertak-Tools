@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khmer AI TTS – Amertak Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css">
+<script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+
+<style>
+/* ─── Reset ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Kantumruy Pro", sans-serif;
+}
+
+/* ─── Tokens ─── */
+:root {
+  --bg:        #0a0007;
+  --surface:   #120010;
+  --card:      rgba(30, 0, 22, 0.72);
+  --border:    rgba(220, 38, 100, 0.18);
+  --border-hi: rgba(220, 38, 100, 0.45);
+  --red:       #dc2464;
+  --red-glow:  #ff1a6e;
+  --red-dim:   rgba(220, 36, 100, 0.12);
+  --muted:     rgba(255,255,255,0.45);
+  --text:      #f5e8f0;
+  --sidebar-w: 240px;
+  --header-h:  62px;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 99px; }
+
+/* ─── Body ─── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ambient red blur blobs */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 10%,  rgba(180,0,70,0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 40% at 85% 80%,  rgba(220,20,80,0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 30% at 60% 30%,  rgba(255,0,80,0.10) 0%, transparent 60%);
+  z-index: 0;
+}
+
+/* ─── Header ─── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  background: rgba(10, 0, 7, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+
+.header-burger {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 8px;
+  transition: color .2s, background .2s;
+}
+.header-burger:hover { color: var(--red); background: var(--red-dim); }
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.header-logo img {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  /* fallback if svg/logo.svg missing */
+  background: transparent;
+}
+.header-logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .03em;
+}
+.header-logo-text span { color: var(--red); }
+
+.header-spacer { flex: 1; }
+
+.header-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--red);
+  border: 1px solid var(--border-hi);
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: .06em;
+  background: var(--red-dim);
+}
+
+/* ─── Sidebar ─── */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-w);
+  background: rgba(12, 0, 9, 0.9);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  z-index: 90;
+  transform: translateX(0);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sidebar.collapsed { transform: translateX(calc(-1 * var(--sidebar-w))); }
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 20px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 0;
+  border-left: 3px solid transparent;
+  transition: color .18s, background .18s, border-color .18s;
+}
+.nav-item i {
+  font-size: 16px;
+  width: 18px;
+  flex-shrink: 0;
+}
+.nav-item:hover {
+  color: var(--text);
+  background: var(--red-dim);
+}
+.nav-item.active {
+  color: var(--red-glow);
+  background: rgba(220, 36, 100, 0.10);
+  border-left-color: var(--red);
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 16px;
+}
+
+/* ─── Main layout ─── */
+.layout {
+  padding-top: var(--header-h);
+  margin-left: var(--sidebar-w);
+  transition: margin-left .3s cubic-bezier(.4,0,.2,1);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+.layout.full { margin-left: 0; }
+
+.main {
+  display: flex;
+  justify-content: center;
+  padding: 36px 20px 50px;
+}
+
+/* ─── Card ─── */
+.card {
+  width: 100%;
+  max-width: 680px;
+  background: var(--card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px 30px;
+  box-shadow:
+    0 0 0 1px rgba(220,36,100,0.07),
+    0 30px 80px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* card top accent line */
+.card::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  border-radius: 2px;
+  margin-bottom: 28px;
+  opacity: .7;
+}
+
+/* ─── Card header ─── */
+.card-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #fff;
+}
+.card-title span { color: var(--red); }
+
+.card-sub {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 28px;
+}
+
+/* ─── Field ─── */
+.field { margin-bottom: 18px; }
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.field-label i { font-size: 14px; color: var(--red); }
+
+/* ─── Textarea ─── */
+textarea {
+  width: 100%;
+  height: 160px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+textarea:focus {
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 3px rgba(220,36,100,0.10);
+}
+textarea::placeholder { color: rgba(255,255,255,0.22); }
+
+/* char counter */
+.char-count {
+  text-align: right;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ─── Row grid ─── */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ─── Select wrapper (custom dropdown) ─── */
+.select-wrap {
+  position: relative;
+}
+.select-wrap i.select-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: var(--red);
+  pointer-events: none;
+  z-index: 1;
+}
+.select-wrap i.chevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+select {
+  width: 100%;
+  padding: 13px 36px 13px 40px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+  font-family: "Kantumruy Pro", sans-serif;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+select:focus {
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 3px rgba(220,36,100,0.10);
+}
+select:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+select option {
+  background: #1a0014;
+  color: var(--text);
+}
+
+/* ─── Speed Radio ─── */
+.speed-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.speed-btn {
+  flex: 1;
+  min-width: 52px;
+  padding: 9px 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.35);
+  color: var(--muted);
+  font-size: 13px;
+  font-family: "Kantumruy Pro", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all .18s;
+  user-select: none;
+}
+.speed-btn:hover {
+  border-color: var(--border-hi);
+  color: var(--text);
+}
+.speed-btn.active {
+  background: var(--red-dim);
+  border-color: var(--red);
+  color: var(--red-glow);
+}
+
+/* ─── Generate Button ─── */
+.btn-generate {
+  width: 100%;
+  margin-top: 22px;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #b81050, var(--red), #e8185a);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Kantumruy Pro", sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-position .3s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 24px rgba(220,36,100,0.30);
+  letter-spacing: .01em;
+}
+.btn-generate:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(220,36,100,0.45);
+}
+.btn-generate:active { transform: translateY(0); }
+.btn-generate i { font-size: 18px; }
+.btn-generate.loading { opacity: .75; pointer-events: none; }
+
+/* ─── Status ─── */
+.status {
+  text-align: center;
+  min-height: 26px;
+  font-size: 13px;
+  margin-top: 16px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.status.error { color: #ff6b8a; }
+.status.success { color: #4ade80; }
+
+/* loading dots */
+@keyframes blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+.dot { display:inline-block; width:5px; height:5px; border-radius:50%; background:currentColor; animation:blink 1.2s infinite; }
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+
+/* ─── Waveform ─── */
+.waveform-wrap {
+  display: none;
+  margin-top: 20px;
+  background: rgba(0,0,0,0.40);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 16px 12px;
+}
+.waveform-wrap.visible { display: block; }
+
+#waveform {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wave-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.wave-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  transition: all .18s;
+  flex-shrink: 0;
+}
+.wave-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+.wave-btn i { font-size: 16px; }
+
+.wave-time {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.wave-vol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wave-vol i { font-size: 14px; color: var(--muted); }
+.wave-vol input[type=range] {
+  width: 70px;
+  accent-color: var(--red);
+  cursor: pointer;
+}
+
+/* ─── Download ─── */
+.btn-download {
+  display: none;
+  margin-top: 12px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  background: rgba(22,163,74,0.12);
+  border: 1px solid rgba(22,163,74,0.30);
+  color: #4ade80;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Kantumruy Pro", sans-serif;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .18s, border-color .18s;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-download.visible {
+  display: flex;
+}
+.btn-download:hover {
+  background: rgba(22,163,74,0.22);
+  border-color: rgba(22,163,74,0.55);
+}
+.btn-download i { font-size: 16px; }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(calc(-1 * var(--sidebar-w)));
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 6px 0 40px rgba(0,0,0,0.6);
+  }
+  .layout { margin-left: 0 !important; }
+  .row { grid-template-columns: 1fr; }
+  .card { padding: 24px 18px; }
+}
+
+/* ─── Overlay (mobile sidebar) ─── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 80;
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.show { display: block; }
+
+/* ─── Spin animation ─── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin .8s linear infinite; display: inline-block; }
+</style>
+</head>
+
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <button class="header-burger" id="burgerBtn" aria-label="Toggle menu">
+    <i class="icon-menu" style="font-size:20px">
+      <!-- inline SVG burger -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </i>
+  </button>
+
+  <a href="/" class="header-logo">
+    <img src="svg/logo.svg" alt="Amertak Network"
+         onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex'">
+    <span id="logoFallback" style="display:none; align-items:center; justify-content:center;
+      width:34px; height:34px; background:linear-gradient(135deg,#b81050,#dc2464);
+      border-radius:9px; font-size:16px; font-weight:800; color:#fff; letter-spacing:-.02em;">A</span>
+    <span class="header-logo-text">Amertak <span>Network</span></span>
+  </a>
+
+  <div class="header-spacer"></div>
+  <span class="header-badge">AI TTS</span>
+</header>
+
+<!-- ═══ SIDEBAR OVERLAY ═══ -->
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<nav class="sidebar" id="sidebar">
+  <span class="sidebar-section-label">Menu</span>
+
+  <a href="/" class="nav-item active">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    ទំព័រដើម
+  </a>
+
+  <a href="#" class="nav-item">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+    Voice Generator
+  </a>
+
+  <a href="#" class="nav-item">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+    ប្រវត្តិ Audio
+  </a>
+
+  <div class="sidebar-divider"></div>
+  <span class="sidebar-section-label">ឧបករណ៍</span>
+
+  <a href="#" class="nav-item">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    Amertak Tools
+  </a>
+
+  <a href="#" class="nav-item">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    អំពីយើង
+  </a>
+</nav>
+
+<!-- ═══ LAYOUT ═══ -->
+<div class="layout" id="layout">
+<main class="main">
+<div class="card">
+
+  <!-- Title -->
+  <h1 class="card-title">Khmer AI <span>Voice</span></h1>
+  <p class="card-sub">Piseth &amp; Sreymom Neural Voice · Azure TTS</p>
+
+  <!-- Text input -->
+  <div class="field">
+    <div class="field-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      បញ្ចូលអត្ថបទ
+    </div>
+    <textarea id="text" placeholder="សរសេរអត្ថបទមក ហាហាហា…" oninput="updateCount()"></textarea>
+    <div class="char-count"><span id="charCount">38</span> / 5000 អក្សរ</div>
+  </div>
+
+  <!-- Voice + Language -->
+  <div class="row" style="margin-bottom:18px">
+    <div class="field" style="margin-bottom:0">
+      <div class="field-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Voice
+      </div>
+      <div class="select-wrap">
+        <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--red)" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/></svg>
+        <select id="voice">
+          <option value="km-KH-PisethNeural">👨 Piseth (ប្រុស)</option>
+          <option value="km-KH-SreymomNeural">👩 Sreymom (ស្រី)</option>
+        </select>
+        <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:0">
+      <div class="field-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        ភាសា
+      </div>
+      <div class="select-wrap">
+        <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--red)" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+        <select disabled>
+          <option>🇰🇭 Khmer Cambodia</option>
+        </select>
+        <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Speed radio -->
+  <div class="field">
+    <div class="field-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ល្បឿន Audio
+    </div>
+    <div class="speed-group" id="speedGroup">
+      <button class="speed-btn" data-rate="0.5">0.5×</button>
+      <button class="speed-btn" data-rate="0.75">0.75×</button>
+      <button class="speed-btn active" data-rate="1">1×</button>
+      <button class="speed-btn" data-rate="1.25">1.25×</button>
+      <button class="speed-btn" data-rate="1.5">1.5×</button>
+      <button class="speed-btn" data-rate="2">2×</button>
+    </div>
+  </div>
+
+  <!-- Generate -->
+  <button class="btn-generate" id="generateBtn" onclick="generate()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Generate Voice
+  </button>
+
+  <!-- Status -->
+  <div class="status" id="status"></div>
+
+  <!-- WaveSurfer player -->
+  <div class="waveform-wrap" id="waveformWrap">
+    <div id="waveform"></div>
+    <div class="wave-controls">
+      <button class="wave-btn" id="playPauseBtn" onclick="togglePlay()">
+        <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <svg id="pauseIcon" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <span class="wave-time" id="waveTime">0:00 / 0:00</span>
+      <div class="wave-vol">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <input type="range" id="volSlider" min="0" max="1" step="0.05" value="1" oninput="setVolume(this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Download -->
+  <a id="download" class="btn-download" download="khmer-voice.mp3">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    ⬇ Download MP3
+  </a>
+
+</div>
+</main>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+/* ── Sidebar toggle ── */
+const sidebar  = document.getElementById('sidebar');
+const layout   = document.getElementById('layout');
+const overlay  = document.getElementById('overlay');
+let sidebarOpen = true;
+
+function isMobile() { return window.innerWidth <= 768; }
+
+function toggleSidebar() {
+  if (isMobile()) {
+    const open = sidebar.classList.toggle('open');
+    overlay.classList.toggle('show', open);
+  } else {
+    sidebarOpen = !sidebarOpen;
+    sidebar.classList.toggle('collapsed', !sidebarOpen);
+    layout.classList.toggle('full', !sidebarOpen);
+  }
+}
+
+document.getElementById('burgerBtn').addEventListener('click', toggleSidebar);
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+});
+
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+    if (sidebarOpen) { sidebar.classList.remove('collapsed'); layout.classList.remove('full'); }
+  }
+});
+
+/* ── Char counter ── */
+function updateCount() {
+  const t = document.getElementById('text').value;
+  document.getElementById('charCount').textContent = t.length;
+}
+updateCount();
+
+/* ── Speed radio ── */
+let playbackRate = 1;
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    playbackRate = parseFloat(btn.dataset.rate);
+    if (wavesurfer) wavesurfer.setPlaybackRate(playbackRate);
+  });
+});
+
+/* ── WaveSurfer ── */
+let wavesurfer = null;
+
+function initWaveSurfer() {
+  if (wavesurfer) { wavesurfer.destroy(); wavesurfer = null; }
+
+  wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: 'rgba(220,36,100,0.45)',
+    progressColor: 'rgba(220,36,100,0.95)',
+    cursorColor: '#ff1a6e',
+    cursorWidth: 2,
+    barWidth: 2,
+    barGap: 1.5,
+    barRadius: 2,
+    height: 64,
+    normalize: true,
+    interact: true,
+    backend: 'WebAudio',
+  });
+
+  wavesurfer.on('ready', () => {
+    wavesurfer.setPlaybackRate(playbackRate);
+    updateTime();
+    wavesurfer.play();
+    showPause();
+  });
+
+  wavesurfer.on('audioprocess', updateTime);
+  wavesurfer.on('seek', updateTime);
+  wavesurfer.on('finish', () => { showPlay(); updateTime(); });
+}
+
+function updateTime() {
+  if (!wavesurfer) return;
+  const cur = wavesurfer.getCurrentTime();
+  const dur = wavesurfer.getDuration();
+  document.getElementById('waveTime').textContent = fmt(cur) + ' / ' + fmt(dur);
+}
+
+function fmt(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function togglePlay() {
+  if (!wavesurfer) return;
+  wavesurfer.playPause();
+  if (wavesurfer.isPlaying()) showPause(); else showPlay();
+}
+
+function showPlay()  { document.getElementById('playIcon').style.display=''; document.getElementById('pauseIcon').style.display='none'; }
+function showPause() { document.getElementById('playIcon').style.display='none'; document.getElementById('pauseIcon').style.display=''; }
+
+function setVolume(v) { if (wavesurfer) wavesurfer.setVolume(parseFloat(v)); }
+
+/* ── Main TTS ── */
+const API = "https://khmer-tts-api.onrender.com/tts";
+
+async function generate() {
+  const text   = document.getElementById('text').value.trim();
+  const voice  = document.getElementById('voice').value;
+  const status = document.getElementById('status');
+  const btn    = document.getElementById('generateBtn');
+  const dl     = document.getElementById('download');
+  const wrap   = document.getElementById('waveformWrap');
+
+  if (!text) {
+    setStatus('error', '❌ សូមបញ្ចូលអត្ថបទ');
+    return;
+  }
+
+  btn.classList.add('loading');
+  btn.innerHTML = `<span class="spin">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+  </span> កំពុងបង្កើត…`;
+  setStatus('', '<span class="dot"></span><span class="dot"></span><span class="dot"></span>');
+  wrap.classList.remove('visible');
+  dl.classList.remove('visible');
+
+  try {
+    const response = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, voice })
+    });
+
+    if (!response.ok) throw new Error('API Error ' + response.status);
+
+    const blob = await response.blob();
+    const url  = URL.createObjectURL(blob);
+
+    /* load into wavesurfer */
+    initWaveSurfer();
+    wavesurfer.load(url);
+
+    /* download link */
+    dl.href = url;
+    dl.classList.add('visible');
+
+    wrap.classList.add('visible');
+    setStatus('success', '✅ Audio រួចរាល់ហើយ!');
+
+  } catch (err) {
+    console.error(err);
+    setStatus('error', '❌ Failed: ' + err.message);
+  } finally {
+    btn.classList.remove('loading');
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generate Voice`;
+  }
+}
+function setStatus(cls, html) {
+  const el = document.getElementById('status');
+  el.className = 'status ' + cls;
+  el.innerHTML = html;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,723 @@
+/**
+ * doc.css — API Documentation styles
+ * Extends the existing design system. Uses same variables, cards, glass effects.
+ * Nothing here replaces existing UI components.
+ */
+
+/* ─── Documentation Layout ─── */
+.doc-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+}
+
+.doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.doc-header-titles h2 {
+    font-size: 1.5rem;
+    letter-spacing: -1px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.doc-header-titles h2 strong {
+    color: transparent;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(to right, #ffffff, #ff0000);
+    background-size: 150%;
+}
+
+.doc-header-titles p {
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+body.MODE .doc-header-titles h2 {
+    color: #253044;
+}
+
+body.MODE .doc-header-titles h2 strong {
+    background-image: linear-gradient(90deg, #ff0000, #c300ff);
+}
+
+/* ─── Search ─── */
+.doc-search-wrapper {
+    position: relative;
+    width: 320px;
+}
+
+.doc-search-wrapper .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    color: var(--text-dim);
+    pointer-events: none;
+}
+
+.doc-search-input {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 14px 14px 14px 48px;
+    border-radius: 16px;
+    color: white;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.doc-search-input:hover {
+    box-shadow: 0 0 100px #ff00ee12, 0 10px 100px #338bff0c;
+}
+
+.doc-search-input:focus {
+    border-color: rgba(255, 51, 102, 0.4);
+    box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.08);
+}
+
+.doc-search-input::placeholder {
+    color: var(--text-dim);
+}
+
+body.MODE .doc-search-input {
+    color: #253044;
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+body.MODE .doc-search-input:focus {
+    border-color: rgba(255, 51, 102, 0.4);
+}
+
+/* ─── Categories ─── */
+.doc-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.doc-category-btn {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(8px);
+}
+
+.doc-category-btn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.doc-category-btn.active {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: rgba(255, 51, 102, 0.1);
+}
+
+body.MODE .doc-category-btn {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.12);
+    color: #53657f;
+}
+
+body.MODE .doc-category-btn:hover {
+    border-color: rgba(15, 23, 42, 0.25);
+    color: #253044;
+}
+
+body.MODE .doc-category-btn.active {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: rgba(255, 51, 102, 0.06);
+}
+
+/* ─── Endpoint Grid ─── */
+.doc-endpoints {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+/* ─── Endpoint Card (reuses tool-card design tokens) ─── */
+.endpoint-card {
+    position: relative;
+    width: 100%;
+    padding: 24px;
+    background: var(--card-bg);
+    box-shadow: 0 0 10px #0000009a;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(0px);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-left: 1.5px solid var(--border-light);
+    transition: 0.2s ease;
+    overflow: visible;
+}
+
+.endpoint-card:hover {
+    scale: 1.005;
+}
+
+.endpoint-card::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 20px;
+    width: 4px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    transition: 0.25s ease-in-out;
+}
+
+.endpoint-card:hover::before {
+    height: 60px;
+}
+
+.endpoint-card.danger::before { background: var(--danger); }
+.endpoint-card.success::before { background: var(--success); }
+.endpoint-card.warning::before { background: #f59e0b; }
+
+body.MODE .endpoint-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.091);
+}
+
+/* ─── Endpoint Header ─── */
+.endpoint-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.endpoint-method {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Share Tech', monospace;
+    white-space: nowrap;
+}
+
+.method-get { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+.method-post { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.method-put { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.method-patch { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.method-delete { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+.method-head { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+.method-options { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+
+.endpoint-path {
+    font-family: 'Share Tech', 'Courier New', monospace;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    word-break: break-all;
+}
+
+body.MODE .endpoint-path {
+    color: #253044;
+}
+
+.endpoint-name {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-left: auto;
+}
+
+/* ─── Deep Link Anchor ─── */
+.endpoint-anchor {
+    position: absolute;
+    top: -90px;
+    left: 0;
+    visibility: hidden;
+}
+
+.endpoint-deep-link {
+    position: absolute;
+    top: 24px;
+    right: 16px;
+    opacity: 0;
+    transition: 0.2s ease;
+    cursor: pointer;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+}
+
+.endpoint-card:hover .endpoint-deep-link {
+    opacity: 1;
+}
+
+.endpoint-deep-link svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-dim);
+}
+
+.endpoint-deep-link:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.endpoint-deep-link:hover svg {
+    fill: #fff;
+}
+
+body.MODE .endpoint-deep-link {
+    background: rgba(0,0,0,0.04);
+}
+
+body.MODE .endpoint-deep-link:hover {
+    background: rgba(0,0,0,0.08);
+}
+
+body.MODE .endpoint-deep-link:hover svg {
+    fill: #253044;
+}
+
+/* ─── Endpoint Description ─── */
+.endpoint-description {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* ─── Parameters Table ─── */
+.param-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.param-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-dim);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.param-table td {
+    padding: 10px 14px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.param-table tr:last-child td {
+    border-bottom: none;
+}
+
+.param-table .param-required {
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.param-table .param-type {
+    color: #60a5fa;
+    font-family: 'Share Tech', monospace;
+    font-size: 12px;
+}
+
+.param-table .param-desc {
+    color: var(--text-dim);
+}
+
+body.MODE .param-table th {
+    background: rgba(0,0,0,0.03);
+    color: #53657f;
+}
+
+body.MODE .param-table td {
+    color: #253044;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+body.MODE .param-table .param-desc {
+    color: #53657f;
+}
+
+/* ─── Code Block ─── */
+.code-block-wrapper {
+    position: relative;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--border);
+}
+
+.code-lang-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+body.MODE .code-block-header {
+    background: rgba(0,0,0,0.04);
+}
+
+.code-block-body {
+    position: relative;
+    overflow-x: auto;
+}
+
+.code-block-body pre {
+    margin: 0;
+    padding: 16px;
+    background: rgba(0,0,0,0.2);
+    font-family: 'Share Tech', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #e2e8f0;
+    white-space: pre;
+    tab-size: 4;
+}
+
+body.MODE .code-block-body pre {
+    background: #f8fafc;
+    color: #334155;
+}
+
+.code-block-body .line-numbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 16px 10px;
+    text-align: right;
+    color: rgba(255,255,255,0.15);
+    font-family: 'Share Tech', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    user-select: none;
+    pointer-events: none;
+    min-width: 40px;
+}
+
+body.MODE .code-block-body .line-numbers {
+    color: rgba(0,0,0,0.15);
+}
+
+.code-block-body pre.has-line-numbers {
+    padding-left: 54px;
+}
+
+/* Syntax highlighting via Highlight.js atom-one-dark theme */
+/* We only need to ensure consistency with our dark background */
+.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+    display: block;
+    overflow-x: auto;
+}
+
+/* Light mode overrides for hljs colors to be readable on light bg */
+body.MODE .hljs {
+    color: #383a42;
+}
+body.MODE .hljs-comment { color: #a0a1a7; }
+body.MODE .hljs-string { color: #50a14f; }
+body.MODE .hljs-number { color: #986801; }
+body.MODE .hljs-keyword { color: #a626a4; }
+body.MODE .hljs-function { color: #4078f2; }
+body.MODE .hljs-built_in { color: #0184bc; }
+body.MODE .hljs-literal { color: #0184bc; }
+body.MODE .hljs-attr { color: #986801; }
+body.MODE .hljs-title { color: #4078f2; }
+body.MODE .hljs-params { color: #383a42; }
+body.MODE .hljs-selector-class { color: #c18401; }
+body.MODE .hljs-selector-id { color: #e45649; }
+body.MODE .hljs-selector-tag { color: #a626a4; }
+body.MODE .hljs-attribute { color: #986801; }
+body.MODE .hljs-variable { color: #e45649; }
+body.MODE .hljs-property { color: #4078f2; }
+
+/* ─── Copy Button ─── */
+.copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.3);
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+    z-index: 2;
+}
+
+.copy-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+}
+
+.copy-btn.copied {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.copy-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+body.MODE .copy-btn {
+    background: rgba(0,0,0,0.04);
+}
+
+body.MODE .copy-btn:hover {
+    background: rgba(0,0,0,0.08);
+    color: #253044;
+}
+
+/* ─── Code Tabs ─── */
+.code-tabs {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    padding: 0 14px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+}
+
+.code-tab {
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: 0.2s ease;
+    white-space: nowrap;
+    font-family: 'Poppins', sans-serif;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.code-tab:hover {
+    color: #fff;
+}
+
+.code-tab.active {
+    color: var(--danger);
+    border-bottom-color: var(--danger);
+}
+
+body.MODE .code-tabs {
+    background: rgba(0,0,0,0.03);
+}
+
+body.MODE .code-tab:hover {
+    color: #253044;
+}
+
+.code-tab-content {
+    display: none;
+}
+
+.code-tab-content.active {
+    display: block;
+}
+
+/* ─── Expand/Collapse ─── */
+.endpoint-body {
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    max-height: none;
+    opacity: 1;
+}
+
+.endpoint-body.collapsed {
+    max-height: 120px;
+    opacity: 0.6;
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: 0.2s ease;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.toggle-btn:hover {
+    color: #fff;
+}
+
+.toggle-btn svg {
+    width: 16px;
+    height: 16px;
+    transition: 0.2s ease;
+    fill: currentColor;
+}
+
+.toggle-btn.expanded svg {
+    transform: rotate(180deg);
+}
+
+body.MODE .toggle-btn:hover {
+    color: #253044;
+}
+
+/* ─── Error Response ─── */
+.error-block {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.error-block-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #f87171;
+    margin-bottom: 8px;
+}
+
+.error-block-title svg {
+    width: 16px;
+    height: 16px;
+    fill: #f87171;
+}
+
+.error-block .code-block-wrapper {
+    margin-bottom: 0;
+}
+
+/* ─── Status Code Badge ─── */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Share Tech', monospace;
+}
+
+.status-2xx { background: rgba(16, 185, 129, 0.1); color: #34d399; }
+.status-4xx { background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+.status-5xx { background: rgba(239, 68, 68, 0.1); color: #f87171; }
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+    .doc-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .doc-search-wrapper {
+        width: 100%;
+    }
+
+    .endpoint-header {
+        flex-wrap: wrap;
+    }
+
+    .endpoint-name {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 4px;
+    }
+
+    .endpoint-deep-link {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .endpoint-card {
+        padding: 18px;
+    }
+
+    .endpoint-path {
+        font-size: 12px;
+    }
+
+    .code-block-body pre {
+        font-size: 12px;
+        padding: 12px;
+    }
+
+    .code-block-body pre.has-line-numbers {
+        padding-left: 44px;
+    }
+}

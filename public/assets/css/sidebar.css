@@ -1,0 +1,243 @@
+/**
+ * sidebar.css — Mobile sidebar drawer, section accordions, user profile
+ * card, overlay backdrop. Paired with /assets/js/sidebar.js
+ */
+
+/* --- Mobile Sidebar --- */
+.sidebar-mobile {
+    position: fixed;
+    display: none;
+    top: 72px;
+    left: 0;
+    width: 230px;
+    height: calc(100vh - 72px);
+    background: #0b0b0bb7;
+    backdrop-filter: blur(35px);
+    border: 1px solid var(--border);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    pointer-events: auto;
+
+    z-index: var(--z-sidebar);
+    transform: translateX(-100%);
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 24px 18px 32px;
+}
+
+.sidebar-mobile::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.mobile-nav {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+}
+
+.sidebar-open {
+    transform: translateX(0);
+}
+
+
+.nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    color: var(--text-dim);
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 0;
+    pointer-events: auto;
+
+    z-index: 100;
+}
+
+.nav-link span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: 'Poppins','amertak';
+    font-size: 0.8rem;
+}
+
+.section-toggle {
+    justify-content: start;
+    width: auto;
+    border: none;
+    background: rgba(91, 91, 91, 0.04);
+    padding: 10px 12px;
+    border-radius: 18px;
+}
+
+.section-toggle .section-arrow {
+    transition: transform 0.25s ease;
+    fill: var(--text-dim);
+}
+
+.section-toggle.open .section-arrow {
+    transform: rotate(180deg);
+}
+
+.section-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding-left: 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.35s ease, margin 0.35s ease;
+    opacity: 0;
+}
+
+.section-items.open {
+    max-height: 800px;
+    opacity: 1;
+    margin: 8px 0 16px;
+}
+
+.section-item {
+    padding-left: 10px;
+    font-size: 13px;
+    color: var(--text-main);
+}
+
+.user-profile-wrapper {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 16px;
+}
+
+.user-profile-toggle {
+    width: 100%;
+    text-align: left;
+    padding: 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: 0.25s ease;
+}
+
+.user-profile-toggle:hover,
+.user-profile-toggle.open {
+    background: rgba(255,255,255,0.1);
+}
+
+.user-profile-toggle .profile-arrow {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    position: relative;
+}
+
+.user-profile-toggle.open .profile-arrow {
+    transform: rotate(180deg);
+    border-color: #ff0080;
+}
+
+.user-actions {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+    opacity: 0;
+}
+
+.user-actions.open {
+    max-height: 120px;
+    opacity: 1;
+}
+
+.user-action-btn {
+    width: 100%;
+    text-align: left;
+}
+
+
+/* --- User profile card + overlay backdrop --- */
+/* User Profile Section */
+.user-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 8px;
+    margin-bottom: 16px;
+    background: rgba(255, 0, 128, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 0, 128, 0.2);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.user-info svg {
+    flex: 0 0 32px;
+    width: 22px;
+    height: 22px;
+    fill: #ff0080;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text-dim);
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-email {
+    display: none;
+    font-size: 11px;
+    color: var(--text-main);
+    opacity: 0.7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.logout-link {
+    color: #ff3366;
+    transition: 0.2s ease;
+}
+
+.logout-link:hover,
+.logout-link:hover svg {
+    color: #ff0080;
+    fill: #ff0080;
+}
+
+.overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: #00000000;
+    z-index: var(--z-overlay);
+}
+
+/* --- Responsive (sidebar) --- */
+@media (max-width: 1024px) {
+    .sidebar-mobile {
+        display: block;
+    }
+}

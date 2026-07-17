@@ -1,0 +1,114 @@
+/**
+ * theme.css — Light/Dark mode overrides (body.MODE ...)
+ * ដាក់នៅចំណុចតែមួយ ដើម្បីងាយស្រួលកែពណ៌ Light Mode ទាំងអស់ក្នុងកន្លែងតែមួយ
+ * ដោយមិនចាំបាច់ស្វែងរកកាត់ header.css / sidebar.css / footer.css / base.css ។
+ */
+
+/* --- MODE ---- */
+
+.MODE {
+    background-color: var(--bg-withe);
+}
+
+/* Light mode overrides when `MODE` class is on <body> */
+body.MODE {
+    background-color: #f6f8fc;
+    color: #253044;
+}
+
+body.MODE::before,
+body.MODE::after {
+    opacity: 0;
+}
+
+body.MODE h2 strong {
+    background-image: linear-gradient(90deg, #ff0000, #c300ff);
+}
+
+body.MODE .header {
+    background: #ffffff53;
+    backdrop-filter: blur(50px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 0 15px #a4a4a4;
+}
+
+body.MODE .nav-item,
+body.MODE .nav-link,
+body.MODE svg {
+    color: var(--text-dim);
+    fill: var(--text-dim);
+}
+body.MODE .drop {
+    background: #ffffff;
+    box-shadow: 0 0 15px var(--shadow);
+}
+body.MODE .desktop-profile-btn,
+body.MODE .desktop-profile-menu {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.12);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+body.MODE .drop li {
+    color: var(--text-dim);
+}
+body.MODE .drop svg {
+    fill: var(--text-dim);
+}
+body.MODE .login-btn {
+    background: transparent;
+    border-color: rgba(15, 23, 42, 0.2);
+    color: #253044;
+}
+
+body.MODE .login-btn svg {
+    fill: #253044;
+}
+
+body.MODE .tool-icons svg {
+    fill: #ffffff;
+}
+body.MODE .tool-txt button, body.MODE .tool-txt svg {
+    color: var(--text-dim);
+    fill: var(--text-dim);
+}
+
+body.MODE .tool-txt h2 {
+    background-image: linear-gradient(to right, #389fff, #8800ff);
+}
+body.MODE .sidebar-mobile {
+    background: #ffffff;
+    box-shadow: 0 0 15px #676767;
+}
+
+body.MODE .toggleMode {
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(0, 0, 0, 0.155);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+body.MODE .toggleMode img {
+    filter: none;
+}
+
+body.MODE .tool-card {
+    background: #ffffff;
+    backdrop-filter: blur(20px);
+    color: #253044;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.091);
+}
+
+body.MODE .tool-txt p {
+    color: #53657f;
+}
+
+body.MODE .tool-txt button {
+    color: #d71f4d;
+    background: #fff5f7;
+    border-color: rgba(215, 31, 77, 0.28);
+}
+
+/* ensure header titles and gradients look good on light */
+body.MODE h2 strong {
+    -webkit-background-clip: text;
+}

@@ -27,6 +27,11 @@
     <link rel="icon" type="image/png" href="/svg/logo.svg">
     <link rel="shortcut icon" href="/svg/logo.svg">
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <style>
         .app-wrapper {
@@ -201,26 +206,11 @@
     </style>
 </head>
 <body>
-    <div id="overlay" onclick="toggleSidebar()" class="overlay hidden"></div>
+    <div id="overlay" class="overlay hidden"></div>
     <aside id="sidebar" class="sidebar-mobile"></aside>
 
     <div class="app-wrapper">
-        <header class="header">
-            <div class="header-container">
-                <div class="header-left">
-                    <div class="brand">
-                        <div class="brand-icon"><img src="/svg/logo.svg" alt="logo" width="150px"></div>
-                    </div>
-                </div>
-                <button onclick="toggleSidebar()" class="hamburger-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="rgba(255,255,255,1)"><path d="M16 18V20H5V18H16ZM21 11V13H3V11H21ZM19 4V6H8V4H19Z"></path></svg>
-                </button>
-                <button id="loginBtn" class="login-btn" onclick="window.location.href='/register.html'">Sign Up</button>
-                <button class="toggleMode" id="toggleMode" onclick="toggleMode()">
-                    <img id="mode-btn" src="/svg/light-mode.svg">
-                </button>
-            </div>
-        </header>
+        <header id="header"></header>
 
         <div class="share-container">
             <div id="loadingState" class="loading">
@@ -254,6 +244,9 @@
         </div>
     </div>
 
+    <script src="/assets/js/nav-data.js"></script>
+    <script src="/assets/js/header.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
     <script src="/assets/js/app.js"></script>
     <script>
         function getApiBase() {

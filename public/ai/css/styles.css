@@ -821,6 +821,8 @@ p {
 #chatContainer {
     padding-bottom: 350px;
     animation: fadeIn 0.6s ease;
+    inset: 0;
+    position: fixed;
 }
 
 @keyframes fadeIn {

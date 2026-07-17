@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khmer AI TTS – Amertak Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+
+<link rel="stylesheet" href="/tools/tts/style.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/header.css">
+<link rel="stylesheet" href="/assets/css/sidebar.css">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/footer.css">
+</head>
+
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+ <div id="overlay" class="overlay hidden"></div>
+    <aside id="sidebar" class="sidebar-mobile"></aside>
+<!-- ═══ HEADER ═══ -->
+<header id="header"></header>
+
+<!-- ═══ LAYOUT ═══ -->
+<div class="layout" id="layout">
+<main class="main">
+<div class="card">
+
+  <!-- Title -->
+  <h1 class="card-title">បង្កើត<span>សំឡេង</span> Ai</h1>
+  <p class="card-sub">Piseth &amp; Sreymom Neural Voice · Azure TTS</p>
+
+  <!-- Text input -->
+  <div class="field">
+    <div class="field-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      បញ្ចូលអត្ថបទ
+    </div>
+    <textarea id="text" placeholder="សរសេរអត្ថបទមក ហាហាហា…" oninput="updateCount()"></textarea>
+    <div class="char-count"><span id="charCount">38</span> / 5000 អក្សរ</div>
+  </div>
+
+  <!-- Voice + Language -->
+  <div class="row" style="margin-bottom:18px">
+    <div class="field" style="margin-bottom:0">
+      <div class="field-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Voice
+      </div>
+      <div class="select-wrap">
+        <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--red)" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/></svg>
+        <select id="voice">
+          <option value="km-KH-PisethNeural">👨 Piseth (ប្រុស)</option>
+          <option value="km-KH-SreymomNeural">👩 Sreymom (ស្រី)</option>
+        </select>
+        <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:0">
+      <div class="field-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        ភាសា
+      </div>
+      <div class="select-wrap">
+        <svg style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--red)" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+        <select disabled>
+          <option>🇰🇭 Khmer Cambodia</option>
+        </select>
+        <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Speed radio -->
+  <div class="field">
+    <div class="field-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ល្បឿន Audio
+    </div>
+    <div class="speed-group" id="speedGroup">
+      <button class="speed-btn" data-rate="0.5">0.5×</button>
+      <button class="speed-btn" data-rate="0.75">0.75×</button>
+      <button class="speed-btn active" data-rate="1">1×</button>
+      <button class="speed-btn" data-rate="1.25">1.25×</button>
+      <button class="speed-btn" data-rate="1.5">1.5×</button>
+      <button class="speed-btn" data-rate="2">2×</button>
+    </div>
+  </div>
+
+  <!-- Generate -->
+  <button class="btn-generate" id="generateBtn" onclick="generate()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Generate Voice
+  </button>
+
+  <!-- Status -->
+  <div class="status" id="status"></div>
+
+  <!-- WaveSurfer player -->
+  <div class="waveform-wrap" id="waveformWrap">
+    <div id="waveform"></div>
+    <div class="wave-controls">
+      <button class="wave-btn" id="playPauseBtn" onclick="togglePlay()">
+        <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <svg id="pauseIcon" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <span class="wave-time" id="waveTime">0:00 / 0:00</span>
+      <div class="wave-vol">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <input type="range" id="volSlider" min="0" max="1" step="0.05" value="1" oninput="setVolume(this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Download -->
+  <a id="download" class="btn-download" download="khmer-voice.mp3">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    ⬇ Download MP3
+  </a>
+
+</div>
+</main>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+/* ── Sidebar toggle ── */
+const sidebar  = document.getElementById('sidebar');
+const layout   = document.getElementById('layout');
+const overlay  = document.getElementById('overlay');
+let sidebarOpen = true;
+
+function isMobile() { return window.innerWidth <= 768; }
+
+function toggleSidebar() {
+  if (isMobile()) {
+    const open = sidebar.classList.toggle('open');
+    overlay.classList.toggle('show', open);
+  } else {
+    sidebarOpen = !sidebarOpen;
+    sidebar.classList.toggle('collapsed', !sidebarOpen);
+    layout.classList.toggle('full', !sidebarOpen);
+  }
+}
+
+document.getElementById('burgerBtn').addEventListener('click', toggleSidebar);
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+});
+
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+    if (sidebarOpen) { sidebar.classList.remove('collapsed'); layout.classList.remove('full'); }
+  }
+});
+
+/* ── Char counter ── */
+function updateCount() {
+  const t = document.getElementById('text').value;
+  document.getElementById('charCount').textContent = t.length;
+}
+updateCount();
+
+/* ── Speed radio ── */
+let playbackRate = 1;
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    playbackRate = parseFloat(btn.dataset.rate);
+    if (wavesurfer) wavesurfer.setPlaybackRate(playbackRate);
+  });
+});
+
+/* ── WaveSurfer ── */
+let wavesurfer = null;
+
+function initWaveSurfer() {
+  if (wavesurfer) { wavesurfer.destroy(); wavesurfer = null; }
+
+  wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: 'rgba(220,36,100,0.45)',
+    progressColor: 'rgba(220,36,100,0.95)',
+    cursorColor: '#ff1a6e',
+    cursorWidth: 2,
+    barWidth: 2,
+    barGap: 1.5,
+    barRadius: 2,
+    height: 64,
+    normalize: true,
+    interact: true,
+    backend: 'WebAudio',
+  });
+
+  wavesurfer.on('ready', () => {
+    wavesurfer.setPlaybackRate(playbackRate);
+    updateTime();
+    wavesurfer.play();
+    showPause();
+  });
+
+  wavesurfer.on('audioprocess', updateTime);
+  wavesurfer.on('seek', updateTime);
+  wavesurfer.on('finish', () => { showPlay(); updateTime(); });
+}
+
+function updateTime() {
+  if (!wavesurfer) return;
+  const cur = wavesurfer.getCurrentTime();
+  const dur = wavesurfer.getDuration();
+  document.getElementById('waveTime').textContent = fmt(cur) + ' / ' + fmt(dur);
+}
+
+function fmt(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function togglePlay() {
+  if (!wavesurfer) return;
+  wavesurfer.playPause();
+  if (wavesurfer.isPlaying()) showPause(); else showPlay();
+}
+
+function showPlay()  { document.getElementById('playIcon').style.display=''; document.getElementById('pauseIcon').style.display='none'; }
+function showPause() { document.getElementById('playIcon').style.display='none'; document.getElementById('pauseIcon').style.display=''; }
+
+function setVolume(v) { if (wavesurfer) wavesurfer.setVolume(parseFloat(v)); }
+
+/* ── Main TTS ── */
+const API = "https://khmer-tts-api.onrender.com/tts";
+
+async function generate() {
+  const text   = document.getElementById('text').value.trim();
+  const voice  = document.getElementById('voice').value;
+  const status = document.getElementById('status');
+  const btn    = document.getElementById('generateBtn');
+  const dl     = document.getElementById('download');
+  const wrap   = document.getElementById('waveformWrap');
+
+  if (!text) {
+    setStatus('error', '❌ សូមបញ្ចូលអត្ថបទ');
+    return;
+  }
+
+  btn.classList.add('loading');
+  btn.innerHTML = `<span class="spin">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+  </span> កំពុងបង្កើត…`;
+  setStatus('', '<span class="dot"></span><span class="dot"></span><span class="dot"></span>');
+  wrap.classList.remove('visible');
+  dl.classList.remove('visible');
+
+  try {
+    const response = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, voice })
+    });
+
+    if (!response.ok) throw new Error('API Error ' + response.status);
+
+    const blob = await response.blob();
+    const url  = URL.createObjectURL(blob);
+
+    /* load into wavesurfer */
+    initWaveSurfer();
+    wavesurfer.load(url);
+
+    /* download link */
+    dl.href = url;
+    dl.classList.add('visible');
+
+    wrap.classList.add('visible');
+    setStatus('success', '✅ Audio រួចរាល់ហើយ!');
+
+  } catch (err) {
+    console.error(err);
+    setStatus('error', '❌ Failed: ' + err.message);
+  } finally {
+    btn.classList.remove('loading');
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generate Voice`;
+  }
+}
+function setStatus(cls, html) {
+  const el = document.getElementById('status');
+  el.className = 'status ' + cls;
+  el.innerHTML = html;
+}
+</script>
+
+  <script src="/assets/js/nav-data.js"></script>
+  <script src="/assets/js/header.js"></script>
+  <script src="/assets/js/sidebar.js"></script>
+  <script src="/assets/js/footer.js"></script>
+  <script src="/assets/js/app.js"></script>
+
+</body>
+</html>

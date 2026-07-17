@@ -3,27 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Documents</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0d1117;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        #particle-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            background: radial-gradient(circle at center, #161b22 0%, #0d1117 100%);
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <div id="particle-container">
+        <canvas id="particle-canvas"></canvas>
+    </div>
 
-<script>
-VANTA.GLOBE({
-    el: "#bg-animated",
-
-    mouseControls: true,
-    touchControls: true,
-    gyroControls: false,
-
-    backgroundColor: 0x050b11,
-    color: 0x3b82f6,
-    color2: 0xff5c5c,
-
-    minHeight: window.innerHeight,
-    minWidth: window.innerWidth
-});
-</script>
+    <script src="/assets/js/particle.js"></script>
 </body>
 </html>

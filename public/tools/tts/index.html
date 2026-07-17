@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ស្តាប់សំឡេង — Khmer TTS Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/analytics.css">
+    <link rel="stylesheet" href="/tools/tts/style.css">
+</head>
+<body>
+
+    <!-- Mobile Sidebar Drawer (Hidden on Desktop) -->
+    <div id="overlay" class="overlay hidden"></div>
+    <aside id="sidebar" class="sidebar-mobile"></aside>
+    <header id="header"></header>
+
+<div class="wrap">
+<!--//
+  <div class="motif"></div>
+\\-->
+  <div class="panel">
+
+    <label for="text-input">☪ អត្ថបទ</label>
+    <textarea id="text-input" maxlength="2000" placeholder="វាយបញ្ចូលអត្ថបទ..."></textarea>
+    <div class="field-row">
+      <div class="hint">អតិបរមា ២.០០០ តួអក្សរ</div>
+      <div class="counter" id="counter">0 / 2000</div>
+    </div>
+
+    <div class="chips" id="chips">
+      <button type="button" class="chip">សួស្តី អ្នកទាំងអស់គ្នា ហាហាហា</button>
+      <button type="button" class="chip">សូមស្វាគមន៍មកកាន់ អមតៈ​  ដែលអាចប្រើមុខងារច្រើនដោយហ្រ្វី។</button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>☪ សំឡេង</label>
+        <div class="voice-toggle" role="group" aria-label="Voice selection">
+          <button type="button" class="voice-btn" data-voice="km-KH-PisethNeural" aria-pressed="true">
+            <span class="km-name">សំឡេងប្រុស</span>
+          </button>
+          <button type="button" class="voice-btn" data-voice="km-KH-SreymomNeural" aria-pressed="false">
+            <span class="km-name">សំឡេងស្រី</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="display: none;">
+      <div class="field">
+        <label for="base-url">API Base URL</label>
+        <input type="text" id="base-url" placeholder="http://localhost:3000">
+        <div class="hint">Requests go to <code>{base}/api/tts</code>. Leave blank if this page is served from the same API.</div>
+      </div>
+    </div>
+
+    <button type="button" class="generate" id="generate-btn">
+      <span class="spinner"></span>
+      
+      <span class="gen-label">✦ បង្កើតសំឡេង</span>
+    </button>
+
+    <div class="status" id="status"></div>
+
+    <div class="player" id="player">
+      <div class="player-head">
+        <span class="player-title">Waveform</span>
+        <span class="player-meta" id="voice-meta">—</span>
+      </div>
+
+      <div class="wave-shell">
+        <canvas id="wave" width="1200" height="192" aria-label="Audio waveform, click to seek"></canvas>
+        <div class="time-row">
+          <span id="time-current">0:00</span>
+          <span id="time-total">0:00</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="play-btn" id="play-btn" aria-label="Play">
+          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        </button>
+
+        <div class="action-btns">
+          <button type="button" class="icon-btn" id="download-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+            Download
+          </button>
+          <button type="button" class="icon-btn" id="share-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.1M8.2 13.2l7.6 4.1"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<audio id="audio-el" style="display:none;"></audio>
+
+<footer id="footer"></footer>
+
+<script src="/tools/tts/app.js"></script>
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/sidebar.js"></script>
+<script src="/assets/js/header.js"></script>
+<script src="/assets/js/footer.js"></script>
+<script src="/assets/js/nav-data.js"></script>
+<script src="/assets/js/s"></script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+/**
+ * footer.css — Site footer (social icons, tools links, support/document links).
+ * Paired with /assets/js/footer.js
+ *
+ * ការកែប្រែសំខាន់ៗ:
+ *  1) z-index fix: .footer ត្រូវបានផ្តល់ position:relative + z-index ច្បាស់លាស់
+ *     ដើម្បីកុំឲ្យ #bg-animated (fixed background) លាក់បាំង footer ។
+ *  2) Responsive fix: .footer-info ប្រើ flex-wrap + grid ជំនួសការពឹងផ្អែក
+ *     លើ inline style="display:block", ដូច្នេះជួរឈរនីមួយៗរៀបចំខ្លួនឯង
+ *     ដោយស្វ័យប្រវត្តិលើគ្រប់ទំហំអេក្រង់។
+ *  3) style ថ្មីសម្រាប់ "Document" link (មាន icon + label) ។
+ */
+
+.footer {
+    position: relative;
+    font-family: 'Poppins';
+    z-index: var(--z-footer, 1);
+    padding: 60px 24px;
+    text-align: center;
+    border-top: 1.5px solid var(--border);
+    margin-top: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.683);
+    background: #00000044;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+body.MODE .footer {
+    background-color: #ffffff53;
+    box-shadow: 0 0 20px #7f7f7f4d;
+}
+
+/* Responsive 3-column grid that gracefully collapses on small screens */
+.footer-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.sub-footer {
+    display: block;
+    flex: 1 1 240px;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+/* Tools / Support link columns (rendered via footer.js) */
+.footer-link-list {
+    display: block;
+    padding: 0;
+    text-align: center;
+}
+
+.social-links h4 {
+    font-family: 'Poppins';
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.social-links p {
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer-link-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.footer-link-with-icon svg {
+    flex: 0 0 auto;
+    fill: var(--text-dim);
+}
+
+.social-icon {
+    color: var(--text-dim);
+    transition: 0.3s;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    box-shadow: 0 0 15px #070a133b;
+}
+
+.icon {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: .2s ease;
+    margin: auto;
+    fill: #b1b1b1;
+}
+body.MODE .icon {
+    fill: var(--danger);
+}
+
+.social-icon:hover .icon {
+    position: relative;
+    color: var(--accent);
+    transform: scale(1.2);
+}
+
+.social-icon:hover {
+    border-color: rgb(255, 0, 111);
+    box-shadow: 0 0 10px #ff336688;
+}
+
+.info {
+    padding: 15px;
+    text-align: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-dim);
+}
+
+.copyright {
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 24px;
+}
+
+.sub-copyright {
+    font-size: 10px;
+    color: #475569;
+    margin-top: 8px;
+}
+
+/* --- Responsive (footer) --- */
+@media (max-width: 1024px) {
+    .footer {
+        text-align: center;
+    }
+
+    .footer-info {
+        justify-content: center;
+    }
+
+    .sub-footer {
+        flex: 1 1 100%;
+        max-width: 420px;
+    }
+
+    .social-icon {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 40px 16px;
+    }
+
+    .social-links {
+        gap: 16px;
+        padding: 12px;
+    }
+}

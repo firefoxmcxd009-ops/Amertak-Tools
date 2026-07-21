@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: auto;
+            padding: 0 auto;
+            box-sizing: border-box;
+        }
+        body {
+            background: #000;            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            margin: 0;
+        }
+        .popup {
+            position: fixed;
+            background: #171717;
+            transform: translateX(-50%) translateY(-100px);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            width: 100px;
+            left: 50%;
+            top: 50%;
+            color: #fff;
+            border-radius: 100px;
+            transition: 4s;
+        }
+
+        .popup.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .online {
+            background: green;
+        }
+
+        .offline {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="popup" class="popup"></div>
+</body>
+
+<script>
+    const popup = document.getElementById('popup');
+
+    function showPopup(text, type) {
+        popup.textContent = 'text';
+        popup.className = 'popup ${type} show';
+
+        clearTimeout(window.popupTimer);
+        Window.popupTimer = setTimeout(() => {
+            popup.classList.remove('show');
+        }, 3000);
+    }
+
+    function updateStatus() {
+        if(navigator.onLine) {
+            showPopup("You are Online", "online")
+        } else {
+            showPopup("You are Offline", "offline")
+        }
+    }
+
+    window.addEventListener("online", updateStatus);
+    window.addEventListener("offline", updateStatus);
+
+    updateStatus();
+</script>
+</html>

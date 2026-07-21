@@ -171,12 +171,12 @@ function createAuthPopup() {
         <div class="auth-popup-card">
             <button type="button" class="auth-popup-close" aria-label="Close">&times;</button>
             <div class="auth-popup-icon">${navIcons.auth}</div>
-            <h3>Register or login to use the tools.</h3>
-            <p>Please sign in to access the tools and save your progress.</p>
+            <h3>បង្កើតគណនី ឬចូលគណនី</h3>
+            <p>សូមធ្វីការបង្កើតគណនី ដើម្បីចុច Like និងបង្កើត API Keys ដើម្បីប្រើប្រាស់ API របស់យើងនៅលើវេបសាយរបស់អ្នក ដោយហ្វ្រីក្នុងរយះពេល ១ខែ!</p>
             <div class="auth-popup-actions">
-                <button type="button" class="auth-popup-register">Register</button>
-                <button type="button" class="auth-popup-login">Sign Up</button>
-                <button type="button" class="auth-popup-close-btn">Close</button>
+                <button type="button" class="auth-popup-register">បង្កើតគណនី</button>
+                <button type="button" class="auth-popup-login">ចូលគណនី</button>
+                <button type="button" class="auth-popup-close-btn">បោះបង់</button>
             </div>
         </div>
     `;
@@ -189,7 +189,7 @@ function createAuthPopup() {
         window.location.href = '/register.html';
     });
     popup.querySelector('.auth-popup-login')?.addEventListener('click', () => {
-        window.location.href = '/register.html';
+        window.location.href = '/login.html';
     });
     popup.addEventListener('click', (event) => {
         if (event.target === popup) {

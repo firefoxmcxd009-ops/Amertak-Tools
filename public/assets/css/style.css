@@ -71,7 +71,6 @@ body.MODE h4 {
     border: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     border-left: 1.5px solid var(--border-light);
-    overflow: hidden;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     transition: .2s ease;
 }
@@ -295,6 +294,47 @@ body.MODE h4 {
     font-family: 'Kantumruy Pro', sans-serif;
     min-width: 20px;
     text-align: center;
+    transition: .2s ease;
+}
+
+.like-count::before {
+    content: 'Like';
+    position: fixed;
+    transform: translateY(-3rem) translateX(-2rem);
+    margin: auto;
+    text-align: center;
+    background: var(--danger);
+    color: #fff;
+    padding: 2px;
+    width: 40px;
+    border-radius: 5px;
+
+    scale: .9;
+    transition: .2s ease;
+    opacity: 0;
+}
+.like-count::after {
+    content: '';
+    position: fixed;
+    transform: translateY(-2rem) translateX(-3rem);
+    display: flex;
+    margin: auto;
+    background: var(--danger);
+    width: 15px;
+    height: 15px;
+    border-radius: 1px;
+    rotate: 45deg;
+
+    scale: .9;
+    transition: .2s ease;
+    opacity: 0;
+
+    z-index: -1;
+}
+
+.like-btn:hover .like-count::before, .like-btn:hover .like-count::after {
+    opacity: 1;
+    scale: 1;
 }
 
 body.MODE .like-btn {

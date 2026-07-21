@@ -1,0 +1,96 @@
+/* Slider Container */
+.slider {
+  width: min(1200px, 90%);
+  position: relative;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.wrapper {
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.track {
+  display: flex;
+  transition: .5s ease;
+}
+
+/* Card */
+.slider-card {
+  flex: 0 0 calc(33.333% - 14px);
+  margin-right: 20px;
+}
+
+.slider-card img {
+  border-radius: 1.5rem;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--border);
+  transition: .2s ease;
+}
+
+/* Standard Buttons */
+.slider button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider button:hover {
+  background: var(--card);
+}
+
+.prev {
+  left: -22px;
+}
+
+.next {
+  right: -22px;
+}
+
+/* Mobile Responsiveness */
+@media(max-width: 900px) {
+  .slider-card {
+    flex-basis: calc(50% - 10px);
+  }
+}
+
+@media(max-width: 600px) {
+  .slider-card {
+    flex-basis: 100%;
+  }
+
+  .slider-card img {
+    height: 180px;
+  }
+
+  .slider button {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .prev {
+    left: 5px;
+  }
+
+  .next {
+    right: 5px;
+  }
+}

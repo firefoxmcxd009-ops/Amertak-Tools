@@ -7,6 +7,7 @@ const generateBtn = document.getElementById('generateBtn');
 const clearBtn = document.getElementById('clearBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const copyBtn = document.getElementById('copyBtn');
+const shareBtn = document.getElementById('shareBtn');
 const dropZone = document.getElementById('dropZone');
 const qrImage = document.getElementById('qrImage');
 const scanResult = document.getElementById('scanResult');
@@ -17,7 +18,7 @@ const openResultBtn = document.getElementById('openResultBtn');
 
 const defaultText = '';
 const apiBaseUrl = 'https://api.qrserver.com/v1';
-const logoPath = '/assets/icons/logo.svg';
+const logoPath = '';
 let generatedBlob = null;
 let generatedObjectUrl = '';
 
@@ -73,7 +74,7 @@ async function generateQrCode() {
 
     const originalBtnText = generateBtn.textContent;
     generateBtn.disabled = true;
-    generateBtn.textContent = 'Generating...';
+    generateBtn.textContent = 'កំពុងបង្កើត...';
 
     try {
         if (!window.QRCode) {
@@ -122,11 +123,13 @@ async function generateQrCode() {
         qrPreviewImage.src = generatedObjectUrl;
         downloadBtn.disabled = false;
         copyBtn.disabled = false;
-        setStatus(qrStatus, 'Generated QR image', 'success');
+        shareBtn.disabled = false;
+        setStatus(qrStatus, 'បានបង្កើត!', 'success');
     } catch (error) {
         generatedBlob = null;
         downloadBtn.disabled = true;
         copyBtn.disabled = true;
+        shareBtn.disabled = true;
         setStatus(qrStatus, 'Could not generate QR image', 'error');
         console.error(error);
     } finally {
@@ -134,7 +137,10 @@ async function generateQrCode() {
         generateBtn.textContent = originalBtnText;
     }
 }
-
+  // ---------- Share ----------
+  shareBtn.addEventListener('click', async () => {
+    if (!generateBtn) return;
+  });
 function clearGenerator() {
     qrText.value = '';
     qrPreviewImage.removeAttribute('src');
@@ -168,7 +174,7 @@ async function copyQrCode() {
         await navigator.clipboard.write([
             new ClipboardItem({ [generatedBlob.type]: generatedBlob })
         ]);
-        setStatus(qrStatus, 'Copied PNG', 'success');
+        setStatus(qrStatus, 'បានចម្លង!', 'success');
     } catch (error) {
         setStatus(qrStatus, 'Could not copy PNG', 'error');
         console.error(error);
@@ -178,7 +184,7 @@ async function copyQrCode() {
 function validateScanFile(file) {
     const validTypes = ['image/png', 'image/jpeg', 'image/gif'];
     if (!file) {
-        throw new Error('Please choose an image file');
+        throw new Error('សូមជ្រើសរើសរូបភាព Qr');
     }
 
     if (!validTypes.includes(file.type)) {

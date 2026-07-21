@@ -10,8 +10,8 @@
 
 const SITE = {
     name: 'Amertak',
-    logo: '/svg/logo.svg',
-    favicon: '/svg/logo-of-amertak.png',
+    logo: '/svg/logo.png',
+    favicon: '/svg/logo.png',
     developer: 'Amertak Network',
     website: 'amertak.vercel.pp',
     discordInvite: '#'
@@ -128,7 +128,7 @@ const footerSupportLinks = [
  * តំណភ្ជាប់ Social icon ជារង្វង់ (column ទី ១ លើ Footer)
  */
 const footerSocialLinks = [
-    { label: 'Discord', href: SITE.discordInvite, icon: navIcons.discord },
-    { label: 'TikTok', href: 'https://tiktok.com/@amertak.tools', icon: navIcons.tiktok },
-    { label: 'Telegram', href: 'https://t.me/Amertak_Network', icon: navIcons.telegram }
+    { label: 'Discord', iconName: 'Discord', href: SITE.discordInvite, icon: navIcons.discord },
+    { label: 'TikTok', iconName: 'TikTok', href: 'https://tiktok.com/@amertak.tools', icon: navIcons.tiktok },
+    { label: 'Telegram', iconName: 'Telegram', href: 'https://t.me/Amertak_Network', icon: navIcons.telegram }
 ];

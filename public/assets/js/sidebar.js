@@ -123,7 +123,7 @@ function renderSidebar() {
         profileWrapper.appendChild(userActions);
         nav.appendChild(profileWrapper);
     } else {
-        nav.appendChild(createNavLink({ label: 'Sign Up', href: '/register.html', icon: navIcons.login }));
+        nav.appendChild(createNavLink({ label: 'បង្កើតគណនី', href: '/register.html', icon: navIcons.login }));
     }
 
     sidebar.replaceChildren(nav);

@@ -42,7 +42,7 @@
     box-sizing: border-box;
 }
 
-html {
+*, html, body {
     scroll-behavior: smooth;
 }
 body {
@@ -59,7 +59,7 @@ body {
 
 /* Scrollbar */
 body::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
 }
 
 body::-webkit-scrollbar-track {
@@ -74,8 +74,8 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer;
 }
 
-body::-webkit-scrollbar-thumb:hover {
-    background: red;
+body::-webkit-scrollbar:hover {
+    width: 4px;
 }
 
 body::before,
@@ -102,6 +102,9 @@ body::after {
     opacity: .20;
 }
 
+body p {
+    font-family: 'amertak';
+}
 #bg-animated {
     position: fixed;
     height: 100%;
@@ -123,13 +126,14 @@ body::after {
     font-weight: normal;
 }
 .title strong {
-    color: var(--danger);
-    font-weight: normal;
+    color: var(--bg-withe);
+    font-weight: 600;
 }
-.title p {
+.title span {
+    font-family: sans-serif;
     color: var(--danger);
     text-transform: uppercase;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .title p strong {
@@ -151,61 +155,150 @@ a {
     color: var(--text-dim);
 }
 
-.ai {
+.ai-card {
     position: fixed;
-    z-index: var(--z-ai-button);
+    bottom: 1rem;
+    right: 1rem;
+
+    z-index: 100;
+}
+
+.ai-alert {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    margin: auto;
+    transition: .2s ease;
+    scale: .95;
+    transform: translateY(5px);
+}
+.ai-alert::before {
+    content: 'សួរ អេអាយ';
+    position: relative;
+    display: flex;
+    font-family: 'amertak bolder';
+    color: #f8fafc;
+    bottom: 3.5rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 90px;
+    height: 40px;
+    background: var(--danger);
+
+    z-index: 100;
+}
+.ai-alert::after {
+    content: '';
+    position: relative;
+    display: flex;
+    bottom: 5.1rem;
+    margin: auto;
+    height: 30px;
+    width: 30px;
+    rotate: 45deg;
+    background: var(--danger);
+}
+
+.ai-box {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    border-radius: 32px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--card-bg);
-    border-radius: 15px 0px 15px 15px;
-    border: 1px solid var(--border);
-    border-bottom: 1.5px solid var(--border-light);
-    border-left: 1.5px solid var(--border-light);
-    bottom: 30px;
-    gap: 5px;
-    right: 20px;
-    padding: 10px;
-    width: auto;
-    height: 40px;
-    font-size: 1.1rem;
-    color: #c1c1c1;
+    background:  var(--card-bg);
     backdrop-filter: blur(10px);
-    font-family: sans-serif;
-    text-transform: uppercase;
-    animation: ai 2s infinite alternate-reverse;
-    transition: .5s;
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: .2s;
+}
+
+.ai-box::before {
+    content: "";
+    width: 150%;
+    height: 150%;
+    position: absolute;
+    background: conic-gradient(from 0deg, #ff0037, #7300d7, #2d0404, #0452fb, #ff0037);
+    animation: rotate 4s linear infinite;
+    filter: blur(25px);
+    opacity: .9;
+}
+
+.ai-box::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #0000009c, #000000d0);
+}
+
+.dots {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+
+    animation: bounce 1.2s infinite, glow 2s infinite alternate;
+}
+
+.dot:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: .4s;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: .4;
+    }
+    50% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px #fff;
+    }
+    to {
+        box-shadow: 0 0 10px #7300d7;
+    }
+}
+
+.ai-box:hover {
+    transform: scale(1.05);
     cursor: pointer;
 }
 
-.ai svg {
-    transition: .5s;
-    fill: #c1c1c1;
+.ai-button:hover .ai-alert {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    scale: 1;
 }
-
-.ai:hover {
-    scale: 1.05;
-    color: #fff;
-    filter: drop-shadow(0px 0px 0.4px var(--danger));
-}
-.ai:active {
-    scale: 0.95;
-}
-.ai:hover svg {
-    fill: #fff;
-}
-
-@keyframes ai {
-    from {
-        box-shadow: -1px 1px 2px #b300ff,
-        1px -1px 1px #0077ff;
-    }
-    to {
-        box-shadow: 0 -1px 1px #008cff,
-        1px -2px 2px #ff008c;
-    }
-}
-
 
 /* --- Global SVG default fill --- */
 /* SVG ICONS */

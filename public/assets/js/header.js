@@ -97,7 +97,7 @@ function buildHeader() {
     const loginBtn = document.createElement('button');
     loginBtn.id = 'loginBtn';
     loginBtn.className = 'login-btn';
-    loginBtn.innerHTML = `${navIcons.user} Sign Up`;
+    loginBtn.innerHTML = `${navIcons.user} បង្កើតគណនី`;
     loginBtn.addEventListener('click', () => { window.location.href = '/register.html'; });
     container.appendChild(loginBtn);
 

@@ -98,7 +98,50 @@ body.MODE .footer {
     display: flex;
     box-shadow: 0 0 15px #070a133b;
 }
+.social-icon span {
+    position: fixed;
+    display: block;
+    margin: auto;
+    margin-bottom: 5.5rem;
+    transition: .2s ease;
+    transform: translateY(5px);
+    scale: .9;
+    opacity: 0;
+}
+.social-icon span::before {
+    content: attr(data-iconName);
+    position: relative;
+    background: var(--danger);
+    padding: 5px;
+    border-radius: 10px;
+    color: #fff;
+    transition: .2s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
 
+.social-icon span::after {
+    content: '';
+    position: relative;
+    margin: auto;
+    bottom: 10px;
+    display: flex;
+    height: 15px;
+    width: 15px;
+    rotate: 45deg;
+    background: var(--danger);
+
+    transition: .2s ease;
+    opacity: 1;
+
+    z-index: -1;
+}
+
+.social-icon:hover span {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(0);
+}
 .icon {
     justify-content: center;
     align-items: center;

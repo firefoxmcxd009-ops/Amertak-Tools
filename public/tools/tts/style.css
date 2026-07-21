@@ -20,9 +20,32 @@
     width:100%;
     max-width:640px;
     margin: auto;
-    margin-top: 4rem;
+    margin-top: 5rem;
     padding:28px 16px 28px;
-}
+  }
+
+  .wrap h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-family: 'amertak bolder', sans-serif;
+    background: var(--lngrad);
+    -webkit-background-clip: text;
+    color: transparent;
+    background-position: 100%;
+  }
+  
+  .wrap .sub-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text);
+    font-family: sans-serif;
+    text-transform: uppercase;
+  }
+  .wrap .sub-title strong {
+    color: var(--pink);
+    font-weight: 800;
+  }
+
   h1{
     font-family:'Fraunces', serif;
     font-weight:600;
@@ -38,6 +61,11 @@
     line-height:1.6;
     max-width:52ch;
     margin:0;
+  }
+
+  /* === GLOBAL FONT === */
+  body, div {
+    font-family: 'amertak';
   }
     /*
   .motif{
@@ -71,8 +99,10 @@
     box-shadow:0 20px 50px -25px rgba(0,0,0,.6);
   }
 
-  label{
-    display:block;
+  label {
+    display:flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size:1.3rem;
     font-family: 'Amertak bolder';
     color: var(--pink);
@@ -80,6 +110,10 @@
     letter-spacing:.04em;
     text-transform:uppercase;
     margin-bottom:8px;
+  }
+
+  label svg{
+    fill: var(--pink);
   }
 
   textarea{
@@ -208,7 +242,7 @@
     width:100%;
     margin-top:22px;
     background:linear-gradient(90deg, var(--pink), var(--pink-dim));
-    color:#241708;
+    color: var(--text);
     border:none;
     border-radius:10px;
     font-family:'amertak bolder';
@@ -239,6 +273,9 @@
   .generate.loading .spinner{display:inline-block;}
   .generate.loading .gen-label{display:none;}
 
+  .generate svg {
+    fill: var(--text);
+  }
   /* ---------- Status ---------- */
   .status{
     margin-top:14px;

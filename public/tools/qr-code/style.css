@@ -1,3 +1,9 @@
+/* === GLOBAL FONT === */
+*, html body, div, button {
+    font-family: 'amertak', sans-serif;
+    font-weight: normal;
+}
+
 .qr-page {
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
@@ -15,7 +21,6 @@
 .eyebrow {
     color: var(--danger);
     font-size: 0.78rem;
-    font-weight: 800;
     letter-spacing: 0;
     text-transform: uppercase;
 }
@@ -50,6 +55,8 @@
 .qr-panel {
     background: var(--card-bg);
     border: 1px solid var(--border);
+    border-left: 1.5px solid var(--border-light);
+    border-bottom: 1.5px solid var(--border-light);
     border-radius: 8px;
     box-shadow: 0 0 18px var(--shadow);
     backdrop-filter: blur(8px);
@@ -70,7 +77,7 @@
     width: 44px;
     height: 44px;
     border-radius: 8px;
-    background: #c78100;
+    background: #c7001e;
     border: 1px solid var(--border);
     flex: 0 0 auto;
 }
@@ -94,7 +101,6 @@
 .drop-zone small {
     color: var(--text-dim);
     font-size: 0.83rem;
-    font-weight: 600;
 }
 
 .field-label,
@@ -102,8 +108,9 @@
     display: grid;
     gap: 8px;
     color: #ffffff;
-    font-weight: 800;
-    font-size: 0.82rem;
+    font-size: 1rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
     text-transform: uppercase;
 }
 
@@ -111,6 +118,8 @@ textarea,
 input[type="number"] {
     width: 100%;
     border: 1px solid var(--border);
+    border-top: 1.5px solid var(--border-light);
+    border-right: 1.5px solid var(--border-light);
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.28);
     color: #ffffff;
@@ -155,7 +164,6 @@ input[type="number"]:focus {
     border-radius: 999px;
     padding: 0 16px;
     color: #ffffff;
-    font-weight: 800;
     text-transform: uppercase;
     cursor: pointer;
     transition: transform var(--transition), border-color var(--transition), opacity var(--transition);
@@ -163,12 +171,17 @@ input[type="number"]:focus {
 
 .primary-btn {
     border: 1px solid var(--danger);
-    background: linear-gradient(135deg, #ff0040, #0b84f5);
+    background: var(--danger);
+    font-family: 'amertak bolder', sans-serif;
 }
 
 .ghost-btn {
     border: 1px solid var(--border);
     background: rgba(0, 0, 0, 0.14);
+}
+.ghost-btn svg {
+    width: 20px;
+    fill: #ffffff;
 }
 
 .primary-btn:hover,
@@ -190,6 +203,8 @@ input[type="number"]:focus {
     gap: 12px;
     min-height: 330px;
     border: 1px dashed var(--border);
+    border-top: 1.5px dashed var(--border-light);
+    border-right: 1.5px dashed var(--border-light);
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.2);
     padding: 18px;

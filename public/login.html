@@ -14,15 +14,21 @@
       justify-content: center;
       align-items: center;
     }
-    .auth-page { max-width: 85%; width: 400px; margin: 5rem auto; padding: 2rem; border: 1px solid var(--border); background: var(--card); border-radius: 18px; box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
-    .auth-page h1 { font-size: 1.5rem; color: #fff;}
+    .auth-page { max-width: 85%; width: 400px; margin: 5rem auto; padding: 2rem; border: 1px solid var(--border); background: var(--card-bg); border-radius: 18px; box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+    .auth-page h1 {
+      font-size: 1.5rem;
+      color: #fff;
+      font-family: 'amertak bolder';
+      font-weight: normal;
+    }
     .auth-page form { display: grid; gap: 1rem; }
-    .auth-page input { width: 100%; padding: 0.95rem 1rem; border: 1px solid var(--border); font-size: 1rem; outline: none; background: var(--card-bg); color: var(--danger); fill: var(--danger);}
+    .auth-page input { width: 100%; padding: 0.95rem 1rem; border: 1px solid var(--border); font-size: .85rem; outline: none; background: var(--card-bg); color: var(--danger); fill: var(--danger);}
     .auth-page input:focus {
       border: 1.5px solid var(--danger);
     }
 
     input {
+      font-family: 'amertak';
       border-radius: 50px;
       backdrop-filter: blur(10px);
     }
@@ -59,7 +65,10 @@
       gap: 20px;
     }
     .auth-button .auth-submit {
+      font-family: 'amertak';
       width: 110px;
+      font-size: .9rem;
+      font-weight: normal;
       background: var(--danger);
       border-radius: 5px 25px 25px 20px;
     }
@@ -105,6 +114,7 @@
       font-size: 3rem;
       color: #ff005d;
       animation: intro2 2s;
+      animation-delay: 100ms;
     }
     .main p {
       font-family: 'amertak';
@@ -181,7 +191,9 @@
 <body>
 
   <!-- BACKGROUND ANIMATED -->
-  <div id="bg-animated"></div>
+  <div id="particle-container">
+    <canvas id="particle-canvas"></canvas>
+  </div>
 
 <!-- LOGIN PAGE -->
 <div class="page">
@@ -190,19 +202,19 @@
       <div class="auth-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="50"><path d="M12 1L20.2169 2.82598C20.6745 2.92766 21 3.33347 21 3.80217V13.7889C21 15.795 19.9974 17.6684 18.3282 18.7812L12 23L5.6718 18.7812C4.00261 17.6684 3 15.795 3 13.7889V3.80217C3 3.33347 3.32553 2.92766 3.78307 2.82598L12 1ZM12 7C10.8954 7 10 7.89543 10 9C10 9.74025 10.4022 10.3866 10.9999 10.7324L11 15H13L13.0011 10.7318C13.5983 10.3858 14 9.73984 14 9C14 7.89543 13.1046 7 12 7Z"></path></svg>
       </div>
-      <h1>Login</h1>
+      <h1>ចូលគណនី</h1>
     </div>
     <div id="status"></div>
     <form id="loginForm">
-      <input type="email" id="email" name="email" placeholder="Email" required>
-      <input type="password" id="password" name="password" placeholder="Password" required>
+      <input type="email" id="email" name="email" placeholder="បញ្ចូលអ៊ីមែល ឧ. yourname@amertak.com" required>
+      <input type="password" id="password" name="password" placeholder="បញ្ចូលពាក្យសម្ងាត់" required>
       <div class="auth-button">
-        <button class="auth-submit" type="submit">Login</button>
-        <button class="auth-submit" type="button" onclick="window.location.href='/register.html'">Register</button>
+        <button class="auth-submit" type="submit">ចូលគណនី</button>
+        <button class="auth-submit" type="button" onclick="window.location.href='/register.html'">បង្កើតគណនី</button>
       </div>
 
     </form>
-    <p>Don't have an account? <a href="/register.html">Register now</a></p>
+    <p>មិនទាន់មានគណនី? <a href="/register.html">បង្កើតឥឡូវនេះ!</a></p>
   </main>
 
   <!-- INTRO -->
@@ -232,26 +244,6 @@
   </script>
 
   <!-- BACKGROUND ANIMATION -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
-
-    <script>
-    VANTA.GLOBE({
-        el: "#bg-animated",
-        size: 1,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: true,
-
-        backgroundColor: 0x050b11,
-        color: 0xff3f81,
-        color2: 0xffffff,
-
-        minHeight: 100.00,
-        minWidth: 100.00,
-        scale: 1.00,
-        scaleMobile: 1.00
-    });
-    </script>
+  <script src="/assets/js/particle.js"></script>
 </body>
 </html>

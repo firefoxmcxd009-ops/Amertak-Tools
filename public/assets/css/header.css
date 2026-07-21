@@ -277,8 +277,9 @@ li:hover svg , li:hover {
     padding: 24px;
     z-index: var(--z-popup);
     opacity: 0;
+    font-family: 'amertak';
     pointer-events: none;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease, .2s ease;
 }
 
 .auth-popup.open {
@@ -296,16 +297,17 @@ li:hover svg , li:hover {
     text-align: center;
     color: #ffffff;
     position: relative;
+    transition: .2s ease;
 }
 
 .auth-popup-close,
 .auth-popup-close-btn,
 .auth-popup-register,
 .auth-popup-login {
+    font-family: 'amertak';
     border: none;
     cursor: pointer;
     border-radius: 999px;
-    font-weight: 700;
     transition: .25s ease;
 }
 .auth-popup-close:hover,
@@ -338,14 +340,15 @@ li:hover svg , li:hover {
 }
 
 .auth-popup-card h3 {
+    font-family: 'amertak bolder';
     margin-bottom: 12px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #ffffff;
 }
 
 .auth-popup-card p {
     margin-bottom: 24px;
-    color: rgba(255,255,255,0.8);
+    color: rgba(197, 195, 195, 0.8);
     line-height: 1.6;
 }
 
@@ -429,11 +432,10 @@ li:hover svg , li:hover {
     border-left: 2px solid var(--border-light);
     border-radius: 999px;
     font-size: 13px;
-    font-weight: 700;
     cursor: pointer;
     transition: 0.3s ease;
     z-index: 300;
-    font-family: 'Kantumruy Pro', sans-serif;
+    font-family: 'amertak', sans-serif;
 }
 
 .login-btn svg {

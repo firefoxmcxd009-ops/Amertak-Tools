@@ -14,8 +14,9 @@ function extractSvgInner(svgString) {
 
 function renderSocialIcons() {
     return footerSocialLinks.map((social, index) => `
-        <a href="${social.href}" class="social-icon" data-aos="fade-up" data-aos-delay="${(index + 1) * 100}" ${social.href.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+        <a href="${social.href}" class="social-icon" data-iconName="${social.iconName}" data-aos="fade-up" data-aos-delay="${(index + 1) * 100}" ${social.href.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="rgba(255,255,255,1)">${extractSvgInner(social.icon)}</svg>
+            <span data-iconName="${social.iconName}"></span>
         </a>
     `).join('');
 }

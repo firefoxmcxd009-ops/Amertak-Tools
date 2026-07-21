@@ -10,8 +10,8 @@
     <link rel="canonical" href="https://amertak.tools/">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/svg/logo-of-amertak.png">
-    <link rel="shortcut icon" href="/svg/logo-of-amertak.png">
+    <link rel="icon" type="image/png" href="/svg/logo.png">
+    <link rel="shortcut icon" href="/svg/logo.png">
 
     <!-- ================= OPEN GRAPH (Facebook / Discord / Messenger preview) ================= -->
     <meta property="og:type" content="website">
@@ -19,7 +19,7 @@
     <meta property="og:description" content="Use free browser tools for downloads, QR codes, image to PDF conversion, text counting, and color conversion.">
     
     <!-- 🔥 Banner Image (IMPORTANT for link preview) -->
-    <meta property="og:image" content="https://amertak.tools/svg/logo-of-amertak.png">
+    <meta property="og:image" content="https://amertak.tools/svg/logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -32,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Amertak Tools - Free Online Tools">
     <meta name="twitter:description" content="Free online tools for QR codes, PDF conversion, downloads, text, and more.">
-    <meta name="twitter:image" content="https://amertak.tools/svg/logo.svg">
+    <meta name="twitter:image" content="https://amertak.tools/svg/logo.png">
     
     <!-- External Resources -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -47,7 +47,8 @@
     <link rel="stylesheet" href="/assets/css/sidebar.css">
     <link rel="stylesheet" href="/assets/css/footer.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/analytics.css">
+    <link rel="stylesheet" href="/assets/css/waves.css">
+    <link rel="stylesheet" href="/assets/css/slider.css">
 </head>
 <body>
     <!-- BACKGROUND ANIMATED -->
@@ -63,13 +64,30 @@
         <header id="header"></header>
 
         <!-- AMERTAK TITLE -->
-         <div class="title">
-            <h1 data-aos="zoom" data-aos-delay="200">អមតៈ<strong data-aos="zoom" data-aos-delay="400"> ធូល</strong></h1>
-            <p data-aos="zoom" data-aos-delay="700">AMERTAK<strong data-aos="zoom" data-aos-delay="800"> TOOLS</strong> </p>
-         </div>
-         
+        <div class="title">
+            <h2 class="wave-text" data-aos="zoom" data-aos-delay="100">អមតៈ <strong>ធូល</strong></h2>
+            <span>amertak <strong>tools</strong></span>
+        </div>
+        
+        <!-- ==== SLIDER
+        <div class="slider">
+            <button class="prev">‹</button>
+
+            <div class="wrapper">
+                <div class="track" id="track">
+                    <div class="slider-card"><img src="/svg/logo.png" alt="Slide 1"></div>
+                    <div class="slider-card"><img src="/svg/logo.png" alt="Slide 2"></div>
+                    <div class="slider-card"><img src="/svg/logo.png" alt="Slide 3"></div>
+                    <div class="slider-card"><img src="/svg/banner/banner.png" alt="Slide 4"></div>
+                    <div class="slider-card"><img src="/svg/banner/banner.png" alt="Slide 5"></div>
+                </div>
+            </div>
+
+            <button class="next">›</button>
+        </div>
+        === -->
         <!-- Tools Container -->
-        <div class="tool-box" id="tools" data-aos="zoom" data-aos-delay="900">
+        <div class="tool-box" id="tools" data-aos="zoom" data-aos-delay="400">
             <!-- URL TO MP3 -->
             <div class="tool-card" data-aos="fade-up" data-aos-delay="100"  onclick="window.location.href='/tools/downloader'">
                 <button class="like-btn" data-tool-id="downloader" onclick="event.stopPropagation(); handleLikeClick(this)">
@@ -258,10 +276,18 @@
         <!-- Footer -->
         <footer id="footer"></footer>
         <!-- AI CHAT -->
-        <button class="ai" onclick="window.location.href='/ai'">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.9991 2.99995C19.3131 2.99995 22 5.69516 22 8.9941V21H8.00099C4.68693 21 2.00001 18.3048 2.00001 15.0058V11H4.00001V15.0058C4.00001 17.2042 5.79547 19 8.00099 19H20V8.9941C20 6.79576 18.2046 4.99995 15.9991 4.99995H10V2.99995H15.9991ZM10 13H8.00002V11H10V13ZM16 13H14V11H16V13ZM3.52931 1.31928C3.70584 0.89349 4.29418 0.893492 4.47071 1.31928L4.72364 1.93061C5.15555 2.9734 5.96155 3.80612 6.97462 4.25679L7.6924 4.57612C8.10268 4.75894 8.10263 5.35615 7.6924 5.53902L6.93263 5.87691C5.94498 6.31619 5.15339 7.11941 4.71388 8.12789L4.46681 8.69332C4.28636 9.10745 3.71366 9.10745 3.53321 8.69332L3.28614 8.12789C2.84661 7.11942 2.05506 6.31619 1.06739 5.87691L0.307623 5.53902C-0.102517 5.35615 -0.102565 4.75894 0.307623 4.57612L1.0254 4.25679C2.03845 3.80613 2.84446 2.97343 3.27638 1.93061L3.52931 1.31928Z"></path></svg>
-            សួរអេអាយ
-        </button>
+        <div class="ai-card">
+            <div class="ai-button">
+                <div class="ai-alert"></div>
+                <div class="ai-box" onclick="window.location.href='/ai'">
+                    <div class="dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="/assets/js/nav-data.js"></script>
@@ -269,7 +295,6 @@
     <script src="/assets/js/sidebar.js"></script>
     <script src="/assets/js/footer.js"></script>
     <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/analytics.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
         AOS.init({
@@ -282,5 +307,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     <script src="/assets/js/particle.js"></script>
+    <script src="/assets/js/slider.js"></script>
 </body>
 </html>
